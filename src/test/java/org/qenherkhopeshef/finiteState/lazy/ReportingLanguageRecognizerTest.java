@@ -79,7 +79,7 @@ public class ReportingLanguageRecognizerTest {
 	@Test
 	public void testUnion() {
 		RegularLanguageIF<Character> l = RegularLanguageFactory.seq(
-				RegularLanguageFactory.or(CharacterLanguageFactory.c('a'), CharacterLanguageFactory.c('b'))
+				RegularLanguageFactory.union(CharacterLanguageFactory.c('a'), CharacterLanguageFactory.c('b'))
 		);
 
 		ReportingLanguageRecognizer<Character> rec = new ReportingLanguageRecognizer<Character>(l);

@@ -7,9 +7,7 @@ import java.util.Set;
 /**
  * A language based on an alphabet of <em>tokens</em>, all of the same type.
  *
- * <p>
- * Note : this class contains a number of static constructor functions, for
- * basic regular language creation.
+ * <p> To build instances from this class, look at {@link RegularLanguageFactory}
  *
  * @author rosmord
  * @param <T> the base type for the tokens.

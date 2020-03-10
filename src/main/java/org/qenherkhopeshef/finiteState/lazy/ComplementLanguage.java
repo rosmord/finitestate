@@ -7,7 +7,7 @@ import java.util.Set;
  * The complement of a given language.
  * <p>
  * Remainder : if the language l does not recognize the emptySequence string, then
- * comp(l) recognizes it.
+ * complement(l) recognizes it.
  *
  * @author Serge Rosmorduc (serge.rosmorduc@qenherkhopeshef.org)
  *

@@ -31,8 +31,10 @@ class UnionLanguage<T> extends CompositeLanguage<T> {
 	
 	/**
 	 * A union state is a simple wrapper around a state in one particular child.
-	 * <p> This is not very intuitive, but is correct: as both getInialState() and accept() return 
-	 * sets of possible states, implicitely linked with an "or", the getInitialState() method performs the initial branching 
+	 * <p> This is not very intuitive, but is correct: as both getInialState() 
+	 * and accept() return 
+	 * sets of possible states, implicitely linked with an "or", 
+	 * the getInitialState() method performs the initial branching 
 	 * between the possible child languages, and the rest is done on one language only.
 	 * @author Serge Rosmorduc (serge.rosmorduc@qenherkhopeshef.org)
 	 *

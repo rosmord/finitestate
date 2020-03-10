@@ -9,7 +9,7 @@ public class EmptyLanguageTest {
 
 	@Test
 	public void test() {
-		RegularLanguageIF<Character> rec = rec= RegularLanguageFactory.empty();
+		RegularLanguageIF<Character> rec = rec= RegularLanguageFactory.emptyLanguage();
 		assertFalse("should not recognize emptySequence string", rec.recognize(StringToListHelper.fromString("")));
 		assertFalse("", rec.recognize(StringToListHelper.fromString("ABC")));
 	}

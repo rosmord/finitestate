@@ -4,14 +4,17 @@ import java.util.Set;
 
 /**
  * Base interface for states created when parsing a text with a language.
- * <p> In a first version, the MultiState accept() method sent back another MetaState.
- * This can be correct, but the problem is then that those states can't be easily mixed (we could have ended with two
- * metastate with
- * the same information partly shared (find concrete examples, using the kleene star for instance - maybe something like
- * <code>((ab)*(ab)*))</code>.
- *
- * <p>Returning a set of states avoids the need to provide something like a "merge" operation.</p>
- *
+ * <p> In non-deterministic automata, a given input might lead to a number 
+ * of different states. To make it deterministic, the principle is to replace 
+ * this plurality of states by a set of states, which is the set of all set reachable
+ * with a given input. And <em>this</em> is deterministic.</p>
+ * <p> A MultiStateIF represents a state reachable when recognising a language part. When one
+ * is in a given MultiStateIF, reading a new token might lead toward a <em>set</em> of other MultiStateIF.
+ * 
+ * <p> An important feature of MultiStates is that they must be usable in sets. Hence,
+ * their equals and hashCode methods must be reasonable. 
+ * </p>
+ * 
  * @author rosmord
  * @param <T> the token type.
  */

@@ -32,7 +32,7 @@ public class SampleAutomata {
 	/**
 	 * Regexp : ab | ac
 	 */
-	public static final RegularLanguageIF<Character> AB_OR_AC = or(seq(A,B), seq(A,C));
+	public static final RegularLanguageIF<Character> AB_OR_AC = union(seq(A,B), seq(A,C));
 
 
 	public static final RegularLanguageIF<Character> AB_OR_AC_BB = seq(AB_OR_AC, B, B);
@@ -48,17 +48,17 @@ public class SampleAutomata {
 			seq(A, A, A_STAR_BC_INTER_A_BC_STAR, C, C);
 
 	
-	public static final RegularLanguageIF<Character> NOT_AB_STAR_AC_ENDNOT = comp(AB_STAR_AC);
+	public static final RegularLanguageIF<Character> NOT_AB_STAR_AC_ENDNOT = complement(AB_STAR_AC);
 
-	public static final RegularLanguageIF<Character> NOT_A_EMPTYAB_ENDNOT = comp(A_EMPTY_A_B);
+	public static final RegularLanguageIF<Character> NOT_A_EMPTYAB_ENDNOT = complement(A_EMPTY_A_B);
 
-	public static final RegularLanguageIF<Character> NOT_EMPTY = comp(EMPTY_STRING_LANGUAGE);
+	public static final RegularLanguageIF<Character> NOT_EMPTY = complement(EMPTY_STRING_LANGUAGE);
 
-	public static final RegularLanguageIF<Character> NOT_ONE = comp(any());
+	public static final RegularLanguageIF<Character> NOT_ONE = complement(any());
 
-	public static final RegularLanguageIF<Character> NOT_TWO = comp(seq(any(), any()));
+	public static final RegularLanguageIF<Character> NOT_TWO = complement(seq(any(), any()));
 
-	public static final RegularLanguageIF<Character> DOTPLUS_COMPLEMENT = comp(seq(SKIP, any()));
+	public static final RegularLanguageIF<Character> DOTPLUS_COMPLEMENT = complement(seq(SKIP, any()));
 
 	public static final RegularLanguageIF<Character> NOT_AB_STAR_AC_ENDNOT_ABAB = seq(NOT_AB_STAR_AC_ENDNOT, A, B, A, B);
 	
@@ -67,7 +67,7 @@ public class SampleAutomata {
 	 */
 	
 	public static final RegularLanguageIF<Character> NO_B_TAG =
-			comp(seq(SKIP, c('<'), c('b'), c('>'), star(any())));
+			complement(seq(SKIP, c('<'), c('b'), c('>'), star(any())));
 	
 	public static final RegularLanguageIF<Character> B_TAG_NO_BTAG = seq(c('<'), c('b'), c('>'), NO_B_TAG, c('<'),
 			c('/'), c('b'), c('>'), c('!') );

@@ -1,6 +1,10 @@
+build
 .classpath
 .idea
 .project
 .settings
 .vscode
 target
+.gradle
+bin
+

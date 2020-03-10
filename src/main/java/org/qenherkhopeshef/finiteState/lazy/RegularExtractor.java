@@ -252,11 +252,17 @@ public class RegularExtractor<T> {
         return new Builder<>();
     }
 
+    /**
+     * A builder for {@link RegularExtractor}.
+     * Don't create instances of this class with new, but with the static method
+     * {@link RegularExtractor#getBuilder()} or {@link RegularExtractor#getBuilder(org.qenherkhopeshef.finiteState.lazy.RegularLanguageIF) }
+     * @param <T> 
+     */
     public static class Builder<T> {
 
         private final ArrayList<RegularLanguageIF<T>> languages = new ArrayList<>();
 
-        public Builder() {
+        Builder() {
         }
 
         /**

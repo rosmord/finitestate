@@ -34,10 +34,32 @@
  */
 
 /**
- * Lazy regular language recognition; the language is built with static methods from 
+ * Lazy regular language recognition.
+ * 
+ * <h3>Short guide to classes and use</h3>
+ * 
+ * The language described and recognised below are sequences of objects of an arbitrary class
+ * T. Hence most classes here will take this base class as a parameter. For instance, for 
+ * plain text, the class might be {@link java.lang.Character}.
+ * 
+ * <ul>
+ *   <li> build parts of the search expression 
+ *  using {@link org.qenherkhopeshef.finiteState.lazy.RegularLanguageFactory}</li>
+ *   <li> direct match might be done using 
+ *  {@link org.qenherkhopeshef.finiteState.lazy.RegularLanguageIF#recognize}</li>
+ *   <li> in general, however, one will use {@link org.qenherkhopeshef.finiteState.lazy.RegularExtractor}</li>
+ *   <li> Package {@link org.qenherkhopeshef.finiteState.lazy.character} contains auxiliary classes
+ *       usable when the entry is character-based. See below for an example of use.
+ *   <li> A more generic example is explained below.
+ *   <li> Customisation of the language will usually involve implementing {@link org.qenherkhopeshef.finiteState.lazy#LazyLabelIF}
+ * </ul>
+ * the language is built with static methods from 
  * {@link org.qenherkhopeshef.finiteState.lazy.RegularLanguageIF} .
  *
- * <p>This library allows one to build efficient automata on complex languages.</p>
+ * <h3>Introduction and implementation notes</h3>
+ * <p>This library allows one to build <em>efficient</em>
+ *    recognisers on complex regular languages. Execution time 
+ * is linear in terms of the entry's length</p>
  * 
  * <p>
  * The classes in this system allows one to use the full power of Regular
@@ -52,10 +74,10 @@
  * libraries would be to serialize the properties as text. With the present
  * library, we only need to define a Subclass of LazyToken.
  * <p>
- * The library is still somehow DFA based, but it uses lazy determinization.
- * Most algorithms for doing this work on automata, but the automaton for
- * complement needs an explicitly determinized automaton.
- * <p> </p>From an object oriented point of view, we found that the best
+ * The library uses <em>lazy determinization.</em>
+ * Most algorithms for doing this would work on automata, 
+ * but the automaton for complement needs an explicitly determinized automaton.
+ * <p> From an object oriented point of view, we found that the best
  * way to express our problem was in fact to work in terms of <em>language,</em>
  * not of <em>automata</em>. The exact details (and in particular <em>what</em>
  * the accept() method is supposed to send back) are a bit subtle.
@@ -102,7 +124,79 @@
  * of languages to represent a complex request, but this is not very nice. We might 
  * make the SequenceLanguage public, but it would'nt be logical if we make it public, but 
  * hide the others.</p>
- * <h3>Example</h3>
- * <p>Let's build an automaton to extract numbers from a text.</p>
+ * <h3>First example : character-based</h3>
+ * <p>An automaton to extract numbers from a text.</p>
+ * <pre>
+ *          RegularExtractor<Character> rec1 = 
+ *               RegularExtractor.<Character>getBuilder()
+ *                       .part(star(any()))
+ *                       .part(plus(range('0', '9')))
+ *                       .part(outOfRange('0','9')))
+ *                       .build();
+ *       String s = "dhfjhdfsh0023.dfsd35fds";
+ *       toMatch = StringToListHelper.fromString(s);
+ *       rec.recognizesBeginning(toMatch).ifPresent((m)-> {System.out.println(m);});  
+ * </pre>
+ * <h3>Second example : generic search with custom labels</h3>
+ * <p>We want to match tagged text. Each word in the entry will be tagged with its part of speach.
+ * 
+ * Hence, we create a class <code>DemoWord</code> which is basically a couple (spelling,pos).
+ * The class has the following skeleton : 
+ * <pre>
+ * public class DemoWord {
+ *	
+ *	public String getPartOfSpeech() {...}
+ *
+ *	public String getWord() {...}
+ * }
+ * </pre>
+ * 
+ * Then, we need two classes which implements 
+ * {@link org.qenherkhopeshef.finiteState.lazy.LazyLabelIF}. 
+ * One which will match parts of speeches,
+ * the other which will match words.
+ * 
+ * <p> In this example, we use lambda notation to provide simple implementations :
+ * <pre>
+ * public final class DemoWordLabelHelper  {
+ *
+ *
+ *	public static RegularLanguageIF<DemoWord> textLabel(String text) {
+ *		return RegularLanguageFactory.label(demoWord -> demoWord.getWord().equals(text));
+ *	}
+ *
+ *	public static RegularLanguageIF<DemoWord> posLabel(String partOfSpeech) {
+ *			return RegularLanguageFactory.label(demoWord -> demoWord.getPartOfSpeech().equals(partOfSpeech));
+ *	}
+ * }
+ * </pre>
+ * 
+ * Now, we can build regular languages on DemoWords :
+ * <pre>
+ * RegularExtractor<DemoWord> subjectVerbeExtractor =
+ *				RegularExtractor.<DemoWord>getBuilder()
+ *						.part(DemoWordLabelHelper.posLabel("NN"))
+ *						.part(RegularLanguageFactory.skip())
+ *						.part(RegularLanguageFactory.seq(
+ *								DemoWordLabelHelper.posLabel("VB"),
+ *								RegularLanguageFactory.opt(DemoWordLabelHelper.posLabel("ADV"))))
+ *						.build();
+ * List<List<Integer>> l = subjectVerbeExtractor.search(Arrays.asList(
+ *				new DemoWord("the", "ART"),   //0
+ * 				new DemoWord("big", "ADJ"), // 1
+ *				new DemoWord("cat", "NN"), // 2
+ *				new DemoWord("did", "AUX"), // 3
+ *				new DemoWord("not", "NOT"), // 4
+ *				new DemoWord("see", "VB"), // 5
+ *				new DemoWord("the", "ART"), // 6
+ *				new DemoWord("pretty", "ADJ"), // 7
+ *				new DemoWord("little", "ADJ"), // 8
+ *				new DemoWord("blue", "ADJ"), // 9
+ *				new DemoWord("bird", "NN"), // 10
+ *				new DemoWord("which", "PP"), // 11
+ *				new DemoWord("sang", "VB"), // 12
+ *				new DemoWord("loudly", "ADV") // 13
+ *		));
+ * </pre>
  */
 package org.qenherkhopeshef.finiteState.lazy;

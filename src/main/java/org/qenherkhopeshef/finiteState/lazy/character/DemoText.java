@@ -42,19 +42,60 @@ import static org.qenherkhopeshef.finiteState.lazy.RegularLanguageFactory.*;
 
 /**
  * A simple demonstration for fun and profit.
+ *
  * @author rosmord
  */
 public class DemoText {
 
     public static void main(String[] args) {
-        RegularExtractor<Character> rec = 
-                RegularExtractor.<Character>getBuilder()
+        extractNumbers1();
+        extractNumbers2();
+        demoTextComplex();
+    }
+
+    private static void extractNumbers1() {
+        RegularExtractor<Character> rec
+                = RegularExtractor.<Character>getBuilder()
                         .part(star(any()))
                         .part(plus(range('0', '9')))
-                        .part(not(exact('.')))
+                        .part(exact('.'))
                         .build();
         String s = "dhfjhdfsh0023.dfsd35fds";
         List<Character> toMatch = StringToListHelper.fromString(s);
-        rec.recognizesBeginning(toMatch).ifPresent((m)-> {System.out.println(m);});     
+        rec.recognizesBeginning(toMatch).ifPresent((m) -> {
+            System.out.println(m);
+        });
+    }
+
+    private static void extractNumbers2() {
+        String s = "dhfjhdfsh0023.dfsd35fds";
+        RegularExtractor<Character> rec1
+                = RegularExtractor.<Character>getBuilder()
+                        .part(star(any()))
+                        .part(plus(range('0', '9')))
+                        .part(outOfRange('0', '9'))
+                        .build();
+        List<Character> toMatch = StringToListHelper.fromString(s);
+        rec1.recognizesBeginning(toMatch).ifPresent((m) -> {
+            System.out.println(m);
+        });
+    }
+
+    private static void demoTextComplex() {
+        // A demonstration with a complex language :
+        // recognise strings starting with 'a' and ending with 'z', except when there
+        // is a 'b' inside them.
+        RegularExtractor<Character> rec
+                = RegularExtractor.<Character>getBuilder()
+                        .part(inter(
+                                seq(exact('a'), skip(), exact('b')),
+                                complement(seq(skip(), exact('z'), skip()))
+                        ))
+                        .build();
+        String s = "xa00z00bxa11bxa22222bx";
+        List<List<Integer>> result = rec.search(StringToListHelper.fromString(s));
+        for (List<Integer> posList: result) {
+            System.out.println(s.substring(posList.get(0), posList.get(1)));
+        }
     }
 }

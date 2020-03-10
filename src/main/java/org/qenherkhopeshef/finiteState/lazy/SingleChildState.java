@@ -17,7 +17,6 @@ abstract class SingleChildState<T> extends AbstractMultiState<T> {
 	}
 
 	@Override
-       
 	public boolean equals(Object obj) {
 		if (obj == null) return false;
 		if (obj.getClass() != this.getClass()) {
