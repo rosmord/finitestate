@@ -3,7 +3,7 @@
 Most regular expression libraries work on character strings, which is somehow a limitation in a number of cases.
 
 For instance, in some cases, you want to search on a list of structured tokens. Some of your criteria
-might deal with word spellings, others with some grammatical features (plural, part-of-speach, etc...)
+might deal with word spellings, others with some grammatical features (plural, part-of-speech, etc...)
 
 It's generally possible to work around those problems by providing a specific textual representation of the document, 
 but one might prefer a more direct approach.
