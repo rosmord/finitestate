@@ -346,7 +346,7 @@ public final class RegularLanguageFactory {
             return l;
         else {
             return inter(l, maxLength(maxLength));
-        }
+        }   
     }
     
     /**
