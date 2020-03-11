@@ -102,7 +102,7 @@ range(T low, T high)
 outOfRange(T low, T high)
 : the language consisting of a single list of length 1 containing a token not between *low* and *high*.
 
-label(LazyLabelIF&lt;T> label)
+label(LazyLabelIF`<T>` label)
 : advanced operation; you supply a LazyLabelIF which is basically a lambda expression over a label, telling if this label is accepted or not.
 
 ### Empty language and empty sequence
@@ -123,13 +123,13 @@ skip()
 : an arbitrary sequence of tokens, including the empty one. Think of `.*` in regexps.
 
 maxLength(int maxLength)
-: recognises all lists of length $\le$ `maxLength`.
+: recognises all lists of length ≤ `maxLength`.
 
 exactLength(int length)
 : recognises all lists of length `length`.
 
 maxLength(RegularLanguageIF`<T>` l, int maxLength)
-: recognises all lists **in language `l`** of length $\le$ `maxLength`. Very useful if you want to limit the length of a possible match.
+: recognises all lists **in language `l`** of length ≤ `maxLength`. Very useful if you want to limit the length of a possible match.
 
 
 ### Combinations of languages
@@ -137,10 +137,10 @@ opt(language)
 : recognises `language` or the empty list, i.e. "optionally, language".
 
 star(language)
-: recognises zero or $n$ repetitions of `language`
+: recognises zero or 𝑛 repetitions of `language`
 
 plus(language)
-: recognises one or $n$ repetitions of `language`
+: recognises one or 𝑛 repetitions of `language`
 
 union(languages)
 : an union of languages - a list is recognised iff it belongs to at least one of those languages.
@@ -238,7 +238,7 @@ Now, we can build regular languages on DemoWords. This one will recognize texts 
 
 ## Interesting patterns
 
-To limit the size of a matched sequence to $n$, the system builds the union of the empty sequence, the sequence with one token, the sequence with two tokens... the sequence with $n$ tokens.
+To limit the size of a matched sequence to 𝑛, the system builds the union of the empty sequence, the sequence with one token, the sequence with two tokens... the sequence with 𝑛 tokens.
 
 We then intersect this language with the language whose length we want to limit.
 
