@@ -1,11 +1,12 @@
 plugins {
     id 'java'
-    // id 'maven-publish'
+    id 'maven-publish'
     id 'maven'
     id 'signing'
 }
 
-repositories {    
+repositories {   
+    mavenCentral() 
     mavenLocal()
 }
 
@@ -19,7 +20,7 @@ description = 'finiteState'
 sourceCompatibility = '1.8'
 targetCompatibility = '1.8'
 
-/*
+
 publishing {
     publications {
         maven(MavenPublication) {
@@ -32,7 +33,7 @@ publishing {
 tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
 }
-*/
+
 
 clean {
 	delete "bin"
@@ -40,6 +41,8 @@ clean {
 
 
 // Below : specific sonatype publication stuff
+
+
 
 task javadocJar(type: Jar) {
     classifier = 'javadoc'
@@ -76,13 +79,16 @@ uploadArchives {
     mavenDeployer {
       beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
 
-      repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
-        authentication(userName: ossrhUsername, password: ossrhPassword)
-      }
 
-      snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
-        authentication(userName: ossrhUsername, password: ossrhPassword)
-      }
+    // From https://stackoverflow.com/questions/43710659/uploading-to-maven-central-with-gradle-avoiding-unknown-property-error
+    // to allow compilation and build without connexion.
+    repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
+      authentication(userName: findProperty('ossrhUsername'), password: findProperty('ossrhPassword'))
+    }
+
+    snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
+      authentication(userName: findProperty('ossrhUsername'), password: findProperty('ossrhPassword'))
+    }
 
       pom.project {
         name 'Finitestate'
