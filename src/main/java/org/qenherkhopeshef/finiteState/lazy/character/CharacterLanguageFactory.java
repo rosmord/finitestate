@@ -12,9 +12,11 @@ import java.util.List;
  * <p>
  * Not that useful (need to build factories for sub-languages). Improve...</p>
  *
+ * Deprecated, because RegularLanguageFactory does better.
  * @author Serge Rosmorduc (serge.rosmorduc@qenherkhopeshef.org)
  *
  */
+@Deprecated
 public class CharacterLanguageFactory {
 
     private CharacterLanguageFactory() {}

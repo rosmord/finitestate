@@ -5,9 +5,12 @@ import org.qenherkhopeshef.finiteState.lazy.LazyLabelIF;
 /**
  * Label which matches a range of chars.
  * first &lt; last
+ * 
+ * <p>Deprecated, because it can be done with the regular methods of RegularLanguageFactory.
  * @author Serge Rosmorduc (serge.rosmorduc@qenherkhopeshef.org)
  *
  */
+@Deprecated()
 public class CharacterRangeLabel implements LazyLabelIF<Character>{
 	private char first, last;
 	

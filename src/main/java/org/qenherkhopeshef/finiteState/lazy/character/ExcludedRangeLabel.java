@@ -5,7 +5,10 @@ import org.qenherkhopeshef.finiteState.lazy.LazyLabelIF;
 /**
  * Label which recognizes any character <em>outside of</em> a given range.
  * @author Serge Rosmorduc (serge.rosmorduc@qenherkhopeshef.org)
+ * 
+ * <p>Deprecated, because it can be done with the regular methods of RegularLanguageFactory.
  */
+@Deprecated
 public class ExcludedRangeLabel implements LazyLabelIF<Character>{
 
 	private final char min, max;

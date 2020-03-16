@@ -8,3 +8,4 @@ target
 .gradle
 bin
 
+/.nb-gradle/

@@ -103,15 +103,39 @@ import java.util.Optional;
 public class RegularExtractor<T> {
 
     private final List<RegularLanguageIF<T>> language;
+    private final int postContextSize;
 
     public RegularExtractor(List<RegularLanguageIF<T>> parts) {
         this.language = new ArrayList<>(parts);
+        this.postContextSize = 0;
     }
 
     public RegularExtractor(RegularLanguageIF<T>... parts) {
         this.language = new ArrayList<>(Arrays.asList(parts));
+        this.postContextSize = 0;
     }
 
+    private RegularExtractor(List<RegularLanguageIF<T>> parts, int postContextSize) {
+        this.language = new ArrayList<>(parts);
+        this.postContextSize = postContextSize;
+    }
+
+    /**
+     * Builds a language with a "post context".
+     * In calling the search function (and currently only the search function), 
+     * actual recognition will involve the sequence of both mainLanguage and postContext,
+     * but the resulting match will consider only the part matched by the main language, 
+     * and the search will continue immediatly after this part.
+     * @param <T>
+     * @param mainLanguage
+     * @param postContext
+     * @return a RegularExtractor.
+     */
+    public static<T> RegularExtractor<T> buildRegularExtractorWithPostContext(List<RegularLanguageIF<T>> mainLanguage, List<RegularLanguageIF<T>> postContext) {
+        List<RegularLanguageIF<T>> allParts = new ArrayList<>(mainLanguage);
+        allParts.addAll(postContext);
+        return new RegularExtractor<>(allParts, postContext.size());
+    }
     /**
      * Repeatedly search for matches of the regular language in the input.
      * <p>
@@ -137,8 +161,10 @@ public class RegularExtractor<T> {
             ok= aux.recognize(pos, input);
             if (ok) {
                 List<Integer> positions = aux.getMarkers();
-                result.add(positions);
-                pos= positions.get(positions.size() - 1);
+                // Adds the result. Omit the post context, if any.
+                result.add(positions.subList(0, positions.size() - postContextSize));
+                // Next search position. Don't include post context in matched text.
+                pos= positions.get(positions.size() - 1 - postContextSize);
             }
         } while(ok);
         return result;
@@ -175,6 +201,8 @@ public class RegularExtractor<T> {
      * list of positions if a match took place.
      */
     public Optional<List<Integer>> recognizesBeginning(List<T> tokens) {
+        if (postContextSize != 0)
+            throw new IllegalStateException("method not supported with post context");
         ReportingLanguageRecognizer<T> aux = new ReportingLanguageRecognizer<>(language);
         aux.setEarlyStop(true);
         boolean ok = aux.recognize(tokens);
@@ -216,6 +244,9 @@ public class RegularExtractor<T> {
      * list of positions if a match took place.
      */
     public Optional<List<Integer>> recognizesAll(List<T> tokens) {
+        if (postContextSize != 0)
+            throw new IllegalStateException("method not supported with post context");
+        
         ReportingLanguageRecognizer<T> aux = new ReportingLanguageRecognizer<>(language);
         aux.setEarlyStop(false);
         boolean ok = aux.recognize(tokens);

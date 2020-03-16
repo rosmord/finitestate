@@ -1,13 +1,12 @@
 plugins {
     id 'java'
-    id 'maven-publish'
+    // id 'maven-publish'
+    id 'maven'
+    id 'signing'
 }
 
-repositories {
+repositories {    
     mavenLocal()
-    maven {
-        url = 'http://repo.maven.apache.org/maven2'
-    }
 }
 
 dependencies {
@@ -18,7 +17,9 @@ group = 'org.qenherkhopeshef'
 version = '1.0-SNAPSHOT'
 description = 'finiteState'
 sourceCompatibility = '1.8'
+targetCompatibility = '1.8'
 
+/*
 publishing {
     publications {
         maven(MavenPublication) {
@@ -27,10 +28,89 @@ publishing {
     }
 }
 
+
 tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
 }
+*/
 
 clean {
 	delete "bin"
+}
+
+
+// Below : specific sonatype publication stuff
+
+task javadocJar(type: Jar) {
+    classifier = 'javadoc'
+    from javadoc
+}
+
+task sourcesJar(type: Jar) {
+    classifier = 'sources'
+    from sourceSets.main.allSource
+}
+
+artifacts {
+    archives javadocJar, sourcesJar
+}
+
+
+// Remove javadoc warning (way too verbose !)
+if (JavaVersion.current().isJava8Compatible()) {
+    allprojects {
+      tasks.withType(Javadoc) {        
+          options.addStringOption('Xdoclint:none', '-quiet')
+      }
+    }
+}
+
+signing {
+    useGpgCmd()
+    sign configurations.archives
+}
+
+
+uploadArchives {
+  repositories {
+    mavenDeployer {
+      beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+
+      repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
+        authentication(userName: ossrhUsername, password: ossrhPassword)
+      }
+
+      snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
+        authentication(userName: ossrhUsername, password: ossrhPassword)
+      }
+
+      pom.project {
+        name 'Finitestate'
+        packaging 'jar'
+        description 'Regular Language Library for JSesh and Ramses'
+        url 'https://github.com/rosmord/finitestate'
+
+        scm {
+          connection 'scm:git:git@github.com:rosmord/jvectclipboard.git'
+          developerConnection 'scm:git:git@github.com:rosmord/jvectclipboard.git'
+          url 'https://github.com/rosmord/finitestate'
+        }
+
+        licenses {
+          license {
+            name 'CeCILL-C'
+            url 'https://cecill.info/licences/Licence_CeCILL-C_V1-en.txt'
+          }
+        }
+
+        developers {
+          developer {
+            id 'rosmord'
+            name 'Serge Rosmorduc'
+            email 'serge.rosmorduc@qenherkhopeshef.org'
+          }
+        }
+      }
+    }
+  }
 }
