@@ -1,3 +1,4 @@
+
 plugins {
     id 'java'
     id 'maven-publish'
@@ -11,12 +12,12 @@ repositories {
 }
 
 dependencies {
-    compile 'junit:junit:4.12'
+    testImplementation 'junit:junit:4.12'
 }
 
 group = 'org.qenherkhopeshef'
-version = '1.0-SNAPSHOT'
-description = 'finiteState'
+version = '1.0'
+description = '${project.name}'
 sourceCompatibility = '1.8'
 targetCompatibility = '1.8'
 
@@ -68,6 +69,12 @@ if (JavaVersion.current().isJava8Compatible()) {
     }
 }
 
+ext.isReleaseVersion = !version.endsWith("SNAPSHOT")
+
+tasks.withType(Sign) {
+    onlyIf { gradle.taskGraph.hasTask("uploadArchives")  }
+}
+
 signing {
     useGpgCmd()
     sign configurations.archives
@@ -91,15 +98,15 @@ uploadArchives {
     }
 
       pom.project {
-        name 'Finitestate'
+        name "${project.name}"
         packaging 'jar'
         description 'Regular Language Library for JSesh and Ramses'
-        url 'https://github.com/rosmord/finitestate'
+        url "https://github.com/rosmord/${project.name}"
 
         scm {
-          connection 'scm:git:git@github.com:rosmord/jvectclipboard.git'
-          developerConnection 'scm:git:git@github.com:rosmord/jvectclipboard.git'
-          url 'https://github.com/rosmord/finitestate'
+          connection "scm:git:git@github.com:rosmord/${project.name}.git"
+          developerConnection "scm:git:git@github.com:rosmord/${project.name}.git"
+          url "https://github.com/rosmord/${project.name}"
         }
 
         licenses {
