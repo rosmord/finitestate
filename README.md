@@ -74,7 +74,7 @@ to list them.
 
 ## The elements of `RegularLanguageFactory`
 
-`RegularLanguageFactory`provides a large number of method to describe languages. Each one returns a 
+`RegularLanguageFactory`provides a large number of methods to describe languages. Each one returns a 
 `RegularLanguageIF<T>`.
 
 ### One-token long languages
