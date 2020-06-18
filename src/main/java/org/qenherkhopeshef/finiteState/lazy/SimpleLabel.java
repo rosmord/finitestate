@@ -32,7 +32,7 @@
  * pris connaissance de la licence CeCILL, et que vous en avez accepté les
  * termes.
  */
-package org.qenherkhopeshef.finiteState.lazy;
+package org.qenherkhopeshef.finitestate.lazy;
 
 /**
  * A label which recognizes a specific token (using equals).

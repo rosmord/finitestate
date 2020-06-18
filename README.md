@@ -39,7 +39,7 @@ To use this library to search in character lists :
 
 1. import the static methods from `RegularLanguageFactory`
 ~~~~java
-import static org.qenherkhopeshef.finiteState.lazy.RegularLanguageFactory.*;
+import static org.qenherkhopeshef.finitestate.lazy.RegularLanguageFactory.*;
 ~~~~
 2. Use them to build a RegularExtractor
 ~~~~java

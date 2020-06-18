@@ -1,4 +1,4 @@
-package org.qenherkhopeshef.finiteState.lazy;
+package org.qenherkhopeshef.finitestate.lazy;
 
 /**
  * Possible base class for specific multistates.

@@ -1,32 +1,14 @@
-package org.qenherkhopeshef.finiteState.lazy;
+package org.qenherkhopeshef.finitestate.lazy;
 
 import static org.junit.Assert.*;
 
 import org.junit.Test;
-import org.qenherkhopeshef.finiteState.lazy.character.CharacterLanguageFactory;
-import org.qenherkhopeshef.finiteState.lazy.character.StringToListHelper;
+import org.qenherkhopeshef.finitestate.lazy.character.StringToListHelper;
 
 import java.util.List;
 
 public class IntersectionLanguageTest {
 
-	@Test
-	public void testSimpleInter() {
-		RegularLanguageIF<Character> l = RegularLanguageFactory.inter(CharacterLanguageFactory.c('A'), CharacterLanguageFactory.c(('B')));
-		assertFalse(l.recognize(StringToListHelper.fromString("A")));
-		assertFalse(l.recognize(StringToListHelper.fromString("B")));
-	}
-
-	@Test
-	public void testSimpleInterSeq() {
-
-		RegularLanguageIF<Character> l = RegularLanguageFactory.inter(
-				RegularLanguageFactory.seq(CharacterLanguageFactory.c('A')),
-				RegularLanguageFactory.seq(CharacterLanguageFactory.c(('B'))));
-
-		assertFalse(l.recognize(StringToListHelper.fromString("A")));
-		assertFalse(l.recognize(StringToListHelper.fromString("B")));
-	}
 
 	@Test
 	public void testASTARB_C_INTER_A_BCSTAR() {

@@ -1,7 +1,7 @@
-package org.qenherkhopeshef.finiteState.lazy.lexiconBased;
+package org.qenherkhopeshef.finitestate.lazy.lexiconBased;
 
-import org.qenherkhopeshef.finiteState.lazy.RegularExtractor;
-import org.qenherkhopeshef.finiteState.lazy.RegularLanguageFactory;
+import org.qenherkhopeshef.finitestate.lazy.RegularExtractor;
+import org.qenherkhopeshef.finitestate.lazy.RegularLanguageFactory;
 
 import java.util.Arrays;
 import java.util.List;

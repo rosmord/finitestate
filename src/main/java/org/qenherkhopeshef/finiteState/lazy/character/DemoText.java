@@ -32,13 +32,13 @@
  * pris connaissance de la licence CeCILL, et que vous en avez accepté les
  * termes.
  */
-package org.qenherkhopeshef.finiteState.lazy.character;
+package org.qenherkhopeshef.finitestate.lazy.character;
 
-import org.qenherkhopeshef.finiteState.lazy.RegularExtractor;
+import org.qenherkhopeshef.finitestate.lazy.RegularExtractor;
 
 import java.util.List;
 
-import static org.qenherkhopeshef.finiteState.lazy.RegularLanguageFactory.*;
+import static org.qenherkhopeshef.finitestate.lazy.RegularLanguageFactory.*;
 
 /**
  * A simple demonstration for fun and profit.

@@ -2,10 +2,11 @@
 plugins {
     id 'java-library'    
     id 'maven'
+    id 'maven-publish'
     id 'signing'
 }
 
-version = '1.0'
+version = '1.1'
 group = 'org.qenherkhopeshef'
 description = "${project.name}"
 archivesBaseName = "${project.name}"
@@ -26,11 +27,22 @@ dependencies {
 
 tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
+    //options.compilerArgs << "-Xlint:unchecked" << "-Xlint:deprecation"
+    //options.compilerArgs << "-Xlint:deprecation"
 }
 
 
 clean {
 	delete "bin"
+}
+
+// Needed for publishToMavenLocal
+publishing {
+    publications {
+        maven(MavenPublication) {
+            from(components.java)
+        }
+    }
 }
 
 // Below : specific sonatype publication stuff
@@ -120,5 +132,17 @@ uploadArchives {
         }
       }
     }
+  }
+}
+
+task distclean {
+  doLast {
+    delete "bin"
+	  delete ".classpath"
+ 	  delete ".vscode"
+ 	  delete ".settings"
+ 	  delete ".project"
+ 	  delete ".idea"
+ 	  delete ".nb-gradle"	 
   }
 }

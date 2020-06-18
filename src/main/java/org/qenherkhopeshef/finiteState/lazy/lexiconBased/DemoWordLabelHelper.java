@@ -1,7 +1,7 @@
-package org.qenherkhopeshef.finiteState.lazy.lexiconBased;
+package org.qenherkhopeshef.finitestate.lazy.lexiconBased;
 
-import org.qenherkhopeshef.finiteState.lazy.RegularLanguageFactory;
-import org.qenherkhopeshef.finiteState.lazy.RegularLanguageIF;
+import org.qenherkhopeshef.finitestate.lazy.RegularLanguageFactory;
+import org.qenherkhopeshef.finitestate.lazy.RegularLanguageIF;
 
 public final class DemoWordLabelHelper  {
 

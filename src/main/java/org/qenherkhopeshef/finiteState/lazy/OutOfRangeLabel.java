@@ -1,4 +1,4 @@
-package org.qenherkhopeshef.finiteState.lazy;
+package org.qenherkhopeshef.finitestate.lazy;
 
 class OutOfRangeLabel<T extends Comparable<T>> implements LazyLabelIF<T>{
 	private T low, high;

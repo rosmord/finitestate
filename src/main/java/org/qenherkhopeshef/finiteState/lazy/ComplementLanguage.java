@@ -1,4 +1,4 @@
-package org.qenherkhopeshef.finiteState.lazy;
+package org.qenherkhopeshef.finitestate.lazy;
 
 import java.util.HashSet;
 import java.util.Set;

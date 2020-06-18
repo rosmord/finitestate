@@ -1,7 +1,7 @@
-package org.qenherkhopeshef.finiteState.lazy.character;
+package org.qenherkhopeshef.finitestate.lazy.character;
 
-import org.qenherkhopeshef.finiteState.lazy.RegularLanguageFactory;
-import org.qenherkhopeshef.finiteState.lazy.RegularLanguageIF;
+import org.qenherkhopeshef.finitestate.lazy.RegularLanguageFactory;
+import org.qenherkhopeshef.finitestate.lazy.RegularLanguageIF;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,6 +13,8 @@ import java.util.List;
  * Not that useful (need to build factories for sub-languages). Improve...</p>
  *
  * Deprecated, because RegularLanguageFactory does better.
+ * I know it's a bit weird to keep it in the initial distribution of the project, but
+ * I still need to move some meaningful tests to the use of plain old RegularLanguageFactory.
  * @author Serge Rosmorduc (serge.rosmorduc@qenherkhopeshef.org)
  *
  */

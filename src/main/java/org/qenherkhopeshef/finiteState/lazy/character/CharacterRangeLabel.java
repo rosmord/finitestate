@@ -1,6 +1,6 @@
-package org.qenherkhopeshef.finiteState.lazy.character;
+package org.qenherkhopeshef.finitestate.lazy.character;
 
-import org.qenherkhopeshef.finiteState.lazy.LazyLabelIF;
+import org.qenherkhopeshef.finitestate.lazy.LazyLabelIF;
 
 /**
  * Label which matches a range of chars.

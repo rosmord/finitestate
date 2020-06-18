@@ -1,7 +1,9 @@
-package org.qenherkhopeshef.finiteState.lazy;
+package org.qenherkhopeshef.finitestate.lazy;
 
-import static org.qenherkhopeshef.finiteState.lazy.character.CharacterLanguageFactory.*;
-import static org.qenherkhopeshef.finiteState.lazy.RegularLanguageFactory.*;
+import org.qenherkhopeshef.finitestate.lazy.EmptyStringLanguage;
+import org.qenherkhopeshef.finitestate.lazy.RegularLanguageIF;
+import static org.qenherkhopeshef.finitestate.lazy.character.CharacterLanguageFactory.*;
+import static org.qenherkhopeshef.finitestate.lazy.RegularLanguageFactory.*;
 
 @SuppressWarnings("unchecked")
 public class SampleAutomata {

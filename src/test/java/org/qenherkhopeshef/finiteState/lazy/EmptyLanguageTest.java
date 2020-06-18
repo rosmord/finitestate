@@ -1,9 +1,11 @@
-package org.qenherkhopeshef.finiteState.lazy;
+package org.qenherkhopeshef.finitestate.lazy;
 
+import org.qenherkhopeshef.finitestate.lazy.RegularLanguageIF;
+import org.qenherkhopeshef.finitestate.lazy.RegularLanguageFactory;
 import static org.junit.Assert.*;
 
 import org.junit.Test;
-import org.qenherkhopeshef.finiteState.lazy.character.StringToListHelper;
+import org.qenherkhopeshef.finitestate.lazy.character.StringToListHelper;
 
 public class EmptyLanguageTest {
 

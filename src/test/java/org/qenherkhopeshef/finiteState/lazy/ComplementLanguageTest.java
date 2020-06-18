@@ -1,11 +1,11 @@
-package org.qenherkhopeshef.finiteState.lazy;
+package org.qenherkhopeshef.finitestate.lazy;
 
 import static org.junit.Assert.*;
 
 import org.junit.Test;
-import org.qenherkhopeshef.finiteState.lazy.character.StringToListHelper;
+import org.qenherkhopeshef.finitestate.lazy.character.StringToListHelper;
 
-import static org.qenherkhopeshef.finiteState.lazy.SampleAutomata.*;
+import static org.qenherkhopeshef.finitestate.lazy.SampleAutomata.*;
 
 public class ComplementLanguageTest {
 

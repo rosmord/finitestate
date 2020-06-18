@@ -1,4 +1,4 @@
-package org.qenherkhopeshef.finiteState.lazy.character;
+package org.qenherkhopeshef.finitestate.lazy.character;
 
 import java.util.List;
 import java.util.stream.Collectors;

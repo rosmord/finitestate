@@ -1,7 +1,8 @@
-package org.qenherkhopeshef.finiteState.lazy;
+package org.qenherkhopeshef.finitestate.lazy;
 
+import org.qenherkhopeshef.finitestate.lazy.RegularExtractor;
 import org.junit.Test;
-import org.qenherkhopeshef.finiteState.lazy.character.StringToListHelper;
+import org.qenherkhopeshef.finitestate.lazy.character.StringToListHelper;
 
 import java.util.Arrays;
 import java.util.List;
@@ -9,8 +10,8 @@ import java.util.stream.Collectors;
 
 import static org.junit.Assert.*;
 
-import static org.qenherkhopeshef.finiteState.lazy.character.CharacterLanguageFactory.*;
-import static org.qenherkhopeshef.finiteState.lazy.RegularLanguageFactory.*;
+import static org.qenherkhopeshef.finitestate.lazy.character.CharacterLanguageFactory.*;
+import static org.qenherkhopeshef.finitestate.lazy.RegularLanguageFactory.*;
 
 public class RegularExtractorTest {
 

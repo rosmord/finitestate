@@ -44,17 +44,17 @@
  * 
  * <ul>
  *   <li> build parts of the search expression 
- *  using {@link org.qenherkhopeshef.finiteState.lazy.RegularLanguageFactory}</li>
+ *  using {@link org.qenherkhopeshef.finitestate.lazy.RegularLanguageFactory}</li>
  *   <li> direct match might be done using 
- *  {@link org.qenherkhopeshef.finiteState.lazy.RegularLanguageIF#recognize}</li>
- *   <li> in general, however, one will use {@link org.qenherkhopeshef.finiteState.lazy.RegularExtractor}</li>
- *   <li> Package {@link org.qenherkhopeshef.finiteState.lazy.character} contains auxiliary classes
+ *  {@link org.qenherkhopeshef.finitestate.lazy.RegularLanguageIF#recognize}</li>
+ *   <li> in general, however, one will use {@link org.qenherkhopeshef.finitestate.lazy.RegularExtractor}</li>
+ *   <li> Package {@link org.qenherkhopeshef.finitestate.lazy.character} contains auxiliary classes
  *       usable when the entry is character-based. See below for an example of use.
  *   <li> A more generic example is explained below.
- *   <li> Customisation of the language will usually involve implementing {@link org.qenherkhopeshef.finiteState.lazy#LazyLabelIF}
+ *   <li> Customisation of the language will usually involve implementing {@link org.qenherkhopeshef.finitestate.lazy#LazyLabelIF}
  * </ul>
  * the language is built with static methods from 
- * {@link org.qenherkhopeshef.finiteState.lazy.RegularLanguageIF} .
+ * {@link org.qenherkhopeshef.finitestate.lazy.RegularLanguageIF} .
  *
  * <h3>Introduction and implementation notes</h3>
  * <p>This library allows one to build <em>efficient</em>
@@ -152,7 +152,7 @@
  * </pre>
  * 
  * Then, we need two classes which implements 
- * {@link org.qenherkhopeshef.finiteState.lazy.LazyLabelIF}. 
+ * {@link org.qenherkhopeshef.finitestate.lazy.LazyLabelIF}. 
  * One which will match parts of speeches,
  * the other which will match words.
  * 
@@ -199,4 +199,4 @@
  *		));
  * </pre>
  */
-package org.qenherkhopeshef.finiteState.lazy;
+package org.qenherkhopeshef.finitestate.lazy;

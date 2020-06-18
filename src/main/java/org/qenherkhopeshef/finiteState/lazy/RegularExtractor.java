@@ -32,7 +32,7 @@
  * pris connaissance de la licence CeCILL, et que vous en avez accepté les
  * termes.
  */
-package org.qenherkhopeshef.finiteState.lazy;
+package org.qenherkhopeshef.finitestate.lazy;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -79,7 +79,7 @@ import java.util.Optional;
  * </p>
  * <pre>
  * // having imported the static factory methods DSL from RegularLanguageIF :
- * // import static org.qenherkhopeshef.finiteState.lazy.RegularLanguageIF.*;
+ * // import static org.qenherkhopeshef.finitestate.lazy.RegularLanguageIF.*;
  * RegularExtractor&lt;Character> rec =
  *               RegularExtractor.&lt;Character>getBuilder()
  *                       .part(star(any()))
@@ -286,7 +286,7 @@ public class RegularExtractor<T> {
     /**
      * A builder for {@link RegularExtractor}.
      * Don't create instances of this class with new, but with the static method
-     * {@link RegularExtractor#getBuilder()} or {@link RegularExtractor#getBuilder(org.qenherkhopeshef.finiteState.lazy.RegularLanguageIF) }
+     * {@link RegularExtractor#getBuilder()} or {@link RegularExtractor#getBuilder(org.qenherkhopeshef.finitestate.lazy.RegularLanguageIF) }
      * @param <T> 
      */
     public static class Builder<T> {
