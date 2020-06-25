@@ -7,8 +7,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.junit.Test;
-import org.qenherkhopeshef.finitestate.lazy.ReportingLanguageRecognizer;
-import org.qenherkhopeshef.finitestate.lazy.character.CharacterLanguageFactory;
 import org.qenherkhopeshef.finitestate.lazy.character.StringToListHelper;
 
 import static org.junit.Assert.*;
@@ -18,9 +16,9 @@ public class ReportingLanguageRecognizerTest {
 	@Test
 	public void simpleTest() {
 		ReportingLanguageRecognizer<Character> rec = new ReportingLanguageRecognizer<>(
-				CharacterLanguageFactory.c('0', '9'),
-				CharacterLanguageFactory.c('a'),
-				CharacterLanguageFactory.c('b')
+				RegularLanguageFactory.range('0', '9'),
+				RegularLanguageFactory.exact('a'),
+				RegularLanguageFactory.exact('b')
 		);
 		assertTrue(rec.recognize(StringToListHelper.fromString("3ab")));
 		assertEquals(Arrays.asList(1, 2, 3), rec.getMarkers());
@@ -29,8 +27,8 @@ public class ReportingLanguageRecognizerTest {
 	@Test
 	public void simpleTestRep() {
 		ReportingLanguageRecognizer<Character> rec = new ReportingLanguageRecognizer<>(
-				RegularLanguageFactory.star(CharacterLanguageFactory.c('a')),
-				CharacterLanguageFactory.c('b')
+				RegularLanguageFactory.star(RegularLanguageFactory.exact('a')),
+				RegularLanguageFactory.exact('b')
 		);
 		rec.recognize(StringToListHelper.fromString("ab"));
 		assertEquals(Arrays.asList(1, 2), rec.getMarkers());
@@ -41,14 +39,14 @@ public class ReportingLanguageRecognizerTest {
 	@Test
 	public void testFindNumber() {
 		RegularLanguageIF<Character> numberRegexp = RegularLanguageFactory.seq(
-				RegularLanguageFactory.opt(CharacterLanguageFactory.c('-')),
-				RegularLanguageFactory.plus(CharacterLanguageFactory.c('0', '9')),
-				RegularLanguageFactory.opt(RegularLanguageFactory.seq(CharacterLanguageFactory.c('.'),
-						RegularLanguageFactory.plus(CharacterLanguageFactory.c('0', '9')))));
+				RegularLanguageFactory.opt(RegularLanguageFactory.exact('-')),
+				RegularLanguageFactory.plus(RegularLanguageFactory.range('0', '9')),
+				RegularLanguageFactory.opt(RegularLanguageFactory.seq(RegularLanguageFactory.exact('.'),
+						RegularLanguageFactory.plus(RegularLanguageFactory.range('0', '9')))));
 
 		ReportingLanguageRecognizer<Character> rec = new ReportingLanguageRecognizer<>(
-				RegularLanguageFactory.skip(), numberRegexp, CharacterLanguageFactory.c(' '),
-				RegularLanguageFactory.skip(), CharacterLanguageFactory.c('$')
+				RegularLanguageFactory.skip(), numberRegexp, RegularLanguageFactory.exact(' '),
+				RegularLanguageFactory.skip(), RegularLanguageFactory.exact('$')
 		);
 
 		assertTrue(rec.recognize(StringToListHelper.fromString("un essai 12334.34 dsfsdfd$")));
@@ -83,7 +81,7 @@ public class ReportingLanguageRecognizerTest {
 	@Test
 	public void testUnion() {
 		RegularLanguageIF<Character> l = RegularLanguageFactory.seq(
-				RegularLanguageFactory.union(CharacterLanguageFactory.c('a'), CharacterLanguageFactory.c('b'))
+				RegularLanguageFactory.union(RegularLanguageFactory.exact('a'), RegularLanguageFactory.exact('b'))
 		);
 
 		ReportingLanguageRecognizer<Character> rec = new ReportingLanguageRecognizer<Character>(l);

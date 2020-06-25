@@ -80,14 +80,14 @@ import java.util.Optional;
  * <pre>
  * // having imported the static factory methods DSL from RegularLanguageIF :
  * // import static org.qenherkhopeshef.finitestate.lazy.RegularLanguageIF.*;
- * RegularExtractor&lt;Character> rec =
- *               RegularExtractor.&lt;Character>getBuilder()
+ * RegularExtractor&lt;Character&gt; rec =
+ *               RegularExtractor.&lt;Character&gt;getBuilder()
  *                       .part(star(any()))
  *                       .part(plus(label(new CharacterRangeLabel('0', '9'))))
  *                       .part(not(exact('.')))
  *                       .build();
  * </pre> Please note the use of
- * <code>RegularExtractor.&lt;Character>getBuilder()</code>. The type is needed,
+ * <code>RegularExtractor.&lt;Character&gt;getBuilder()</code>. The type is needed,
  * else the inference system will fail.
  *
  * <p>Also note that if you need a broader "grain", you can use </p>
@@ -110,6 +110,7 @@ public class RegularExtractor<T> {
         this.postContextSize = 0;
     }
 
+    @SafeVarargs
     public RegularExtractor(RegularLanguageIF<T>... parts) {
         this.language = new ArrayList<>(Arrays.asList(parts));
         this.postContextSize = 0;

@@ -5,7 +5,6 @@ import org.qenherkhopeshef.finitestate.lazy.RegularLanguageFactory;
 import static org.junit.Assert.*;
 
 import org.junit.Test;
-import org.qenherkhopeshef.finitestate.lazy.character.CharacterLanguageFactory;
 import org.qenherkhopeshef.finitestate.lazy.character.StringToListHelper;
 
 import static org.qenherkhopeshef.finitestate.lazy.SampleAutomata.*;
@@ -53,15 +52,15 @@ public class KleeneStarLanguageTest {
 								RegularLanguageFactory.seq(
 										RegularLanguageFactory.star(
 												RegularLanguageFactory.seq(
-												CharacterLanguageFactory.c('a'),
-												CharacterLanguageFactory.c('b'))),
+														RegularLanguageFactory.exact('a'),
+														RegularLanguageFactory.exact('b'))),
 
-										CharacterLanguageFactory.c('a'),
-										CharacterLanguageFactory.c("c")
+										RegularLanguageFactory.exact('a'),
+										RegularLanguageFactory.exact('c')
 								)),
-						CharacterLanguageFactory.c('b'),
-						CharacterLanguageFactory.c('b'),
-						CharacterLanguageFactory.c('b'));
+						RegularLanguageFactory.exact('b'),
+						RegularLanguageFactory.exact('b'),
+						RegularLanguageFactory.exact('b'));
 		assertTrue(rec.recognize(StringToListHelper.fromString("bbb")));
 		assertTrue(rec.recognize(StringToListHelper.fromString("acbbb")));
 		assertTrue(rec.recognize(StringToListHelper.fromString("ababacbbb")));

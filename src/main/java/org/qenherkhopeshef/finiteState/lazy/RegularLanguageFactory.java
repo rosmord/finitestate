@@ -64,7 +64,8 @@ public final class RegularLanguageFactory {
      * @param elts a number of languages l1,l2.. based on T.
      * @return a language which is the sequence of l1, l2...
      */
-    public static <T> RegularLanguageIF<T> seq(
+    @SafeVarargs
+	public static <T> RegularLanguageIF<T> seq(
             RegularLanguageIF<T>... elts) {
         return seq(Arrays.asList(elts));
     }
@@ -88,6 +89,7 @@ public final class RegularLanguageFactory {
      * @param elts
      * @return a language which is a union of languages.
      */
+    @SafeVarargs
     public static <T> RegularLanguageIF<T> union(
             RegularLanguageIF<T>... elts) {
         return union(Arrays.asList(elts));
@@ -148,6 +150,7 @@ public final class RegularLanguageFactory {
      * @param l : a number of languages.
      * @return a language representing ( &#2229; l)+
      */
+    @SafeVarargs
     public static <T> RegularLanguageIF<T> inter(
             RegularLanguageIF<T>... l) {
         return new IntersectionLanguage<>(Arrays.asList(l));
@@ -381,6 +384,18 @@ public final class RegularLanguageFactory {
         }
     }
     
-    
-
+    /**
+     * Builds a sequence which matches an exact list of tokens, passed as varargs.
+     * @param <T>
+     * @param tokens
+     * @return
+     */
+    @SafeVarargs
+    public static <T> RegularLanguageIF<T> exactSequence(T... tokens) {
+    	List<RegularLanguageIF<T>> elts = new ArrayList<>();
+    	for (T tok: tokens) {
+    		elts.add(exact(tok));
+    	}
+    	return seq(elts);
+	}    
 }

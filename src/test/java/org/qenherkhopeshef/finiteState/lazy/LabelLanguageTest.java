@@ -2,7 +2,6 @@ package org.qenherkhopeshef.finitestate.lazy;
 
 import org.qenherkhopeshef.finitestate.lazy.RegularLanguageIF;
 import org.junit.Test;
-import org.qenherkhopeshef.finitestate.lazy.character.CharacterLanguageFactory;
 import org.qenherkhopeshef.finitestate.lazy.character.StringToListHelper;
 
 import static org.junit.Assert.assertFalse;
@@ -12,13 +11,13 @@ public class LabelLanguageTest {
 
 	@Test
 	public void testA_A() {
-		RegularLanguageIF<Character> rec = CharacterLanguageFactory.c('a');
+		RegularLanguageIF<Character> rec = RegularLanguageFactory.exact('a');
 		assertTrue(rec.recognize(StringToListHelper.fromString("a")));
 	}
 
 	@Test
 	public void testC_AZ() {
-		RegularLanguageIF<Character> rec = CharacterLanguageFactory.c('a', 'z');
+		RegularLanguageIF<Character> rec = RegularLanguageFactory.range('a', 'z'); 						
 		assertTrue(rec.recognize(StringToListHelper.fromString("c")));
 		assertTrue(rec.recognize(StringToListHelper.fromString("a")));
 		assertTrue(rec.recognize(StringToListHelper.fromString("z")));
@@ -27,13 +26,13 @@ public class LabelLanguageTest {
 
 	@Test
 	public void testA_B() {
-		RegularLanguageIF<Character> rec = CharacterLanguageFactory.c('a');
+		RegularLanguageIF<Character> rec = RegularLanguageFactory.exact('a');					
 		assertFalse(rec.recognize(StringToListHelper.fromString("b")));
 	}
 
 	@Test
 	public void testA_ZERO() {
-		RegularLanguageIF<Character> rec = CharacterLanguageFactory.c('a');
+		RegularLanguageIF<Character> rec = RegularLanguageFactory.exact('a');
 		assertFalse(rec.recognize(StringToListHelper.fromString("")));
 	}
 

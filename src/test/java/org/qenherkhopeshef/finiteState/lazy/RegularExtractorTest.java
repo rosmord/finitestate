@@ -10,7 +10,6 @@ import java.util.stream.Collectors;
 
 import static org.junit.Assert.*;
 
-import static org.qenherkhopeshef.finitestate.lazy.character.CharacterLanguageFactory.*;
 import static org.qenherkhopeshef.finitestate.lazy.RegularLanguageFactory.*;
 
 public class RegularExtractorTest {

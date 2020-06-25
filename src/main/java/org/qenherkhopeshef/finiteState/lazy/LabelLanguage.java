@@ -9,7 +9,7 @@ import java.util.Set;
  * @author Serge Rosmorduc (serge.rosmorduc@qenherkhopeshef.org)
  * @param <T> the token type.
  */
- class LabelLanguage<T> implements RegularLanguageIF<T> {
+class LabelLanguage<T> implements RegularLanguageIF<T> {
 	private final LazyLabelIF<T> label;
 
 	public LabelLanguage(LazyLabelIF<T> label) {
@@ -17,16 +17,18 @@ import java.util.Set;
 		this.label = label;
 	}
 
-        @Override
+	@Override
 	public Set<? extends MultiStateIF<T>> getInitialStates() {
 		return Collections.singleton(new TokenAutomatonState((short) 0));
 	}
 
 	class TokenAutomatonState implements MultiStateIF<T> {
 
-		// This particular automaton has 3 states : 0, initial state, 1, after the label has been recognized, and 2, 
+		// This particular automaton has 3 states : 0, initial state, 1, after the label
+		// has been recognized, and 2,
 		// a token not recognized by the label was seen.
-		// possible transitions are from 0 to 1 (the label was recognized), and all other send in state 2.
+		// possible transitions are from 0 to 1 (the label was recognized), and all
+		// other send in state 2.
 		private short state = 0;
 
 		public TokenAutomatonState(short state) {
@@ -34,12 +36,12 @@ import java.util.Set;
 			this.state = state;
 		}
 
-                @Override
+		@Override
 		public boolean isTerminal() {
 			return state == 1;
 		}
 
-                @Override
+		@Override
 		public java.util.Set<? extends MultiStateIF<T>> accept(T token) {
 			short out = 2;
 			if (state == 0 && label.matches(token)) {
@@ -53,13 +55,13 @@ import java.util.Set;
 			return LabelLanguage.this;
 		}
 
-		@SuppressWarnings("unchecked")
 		@Override
 		public boolean equals(Object obj) {
 			if (obj instanceof LabelLanguage.TokenAutomatonState) {
-				TokenAutomatonState other = (TokenAutomatonState) obj;
-				return this.getParent().equals(other.getParent())
-						&& this.state == other.state;
+				// Need for wildcard '?' to avoid unchecked warning.
+				LabelLanguage<?>.TokenAutomatonState other 
+					= (LabelLanguage<?>.TokenAutomatonState) obj;
+				return this.getParent().equals(other.getParent()) && this.state == other.state;
 			} else {
 				return false;
 			}
@@ -69,14 +71,14 @@ import java.util.Set;
 		public int hashCode() {
 			return this.getParent().hashCode() + 31 * state;
 		}
-		
+
 		@Override
 		public String toString() {
-			String[] s = {"start", "ok", "bad"};
-			return "(label " + label.toString() + s[state]+")";
+			String[] s = { "start", "ok", "bad" };
+			return "(label " + label.toString() + s[state] + ")";
 		}
 	}
-	
+
 	@Override
 	public String toString() {
 		return label.toString();

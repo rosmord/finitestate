@@ -29,6 +29,7 @@ class ReportingLanguageRecognizer<T> {
 		this.sequenceLanguage = new SequenceLanguage<>(new ArrayList<>(regularLanguage));
 	}
 
+	@SafeVarargs
 	public ReportingLanguageRecognizer(RegularLanguageIF<T>... languages) {
 		List<RegularLanguageIF<T>> l = Arrays.asList(languages);
 		this.sequenceLanguage = new SequenceLanguage<T>(l);
@@ -219,19 +220,7 @@ class ReportingLanguageRecognizer<T> {
 		public HashMap<SequenceLanguage<T>.SequenceState, ArrayList<Integer>> markerMap = new HashMap<>();
 		public Set<SequenceLanguage<T>.SequenceState> children = new HashSet<>();
 
-		/**
-		 * Build a state for position 0.
-		 *
-		 * @param children
-		 */
-		public MarkedState(Set<SequenceLanguage<T>.SequenceState> children) {
-			super();
-			ArrayList<Integer> emptyList = new ArrayList<>();
-			for (SequenceLanguage<T>.SequenceState child : children) {
-				addState(null, child, emptyList, 0);
-			}
-		}
-
+	
 		/**
 		 * Builds a state for an arbitrary initial position.
 		 *

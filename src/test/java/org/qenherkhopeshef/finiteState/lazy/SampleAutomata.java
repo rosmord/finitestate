@@ -2,15 +2,13 @@ package org.qenherkhopeshef.finitestate.lazy;
 
 import org.qenherkhopeshef.finitestate.lazy.EmptyStringLanguage;
 import org.qenherkhopeshef.finitestate.lazy.RegularLanguageIF;
-import static org.qenherkhopeshef.finitestate.lazy.character.CharacterLanguageFactory.*;
 import static org.qenherkhopeshef.finitestate.lazy.RegularLanguageFactory.*;
 
-@SuppressWarnings("unchecked")
 public class SampleAutomata {
 
-	public static final RegularLanguageIF<Character> A = c('a');
-	public static final RegularLanguageIF<Character> B = c('b');
-	public static final RegularLanguageIF<Character> C = c('c');
+	public static final RegularLanguageIF<Character> A = exact('a');
+	public static final RegularLanguageIF<Character> B = exact('b');
+	public static final RegularLanguageIF<Character> C = exact('c');
 
 	public static final EmptyStringLanguage<Character> EMPTY_STRING_LANGUAGE = new EmptyStringLanguage<>();
 	
@@ -69,9 +67,9 @@ public class SampleAutomata {
 	 */
 	
 	public static final RegularLanguageIF<Character> NO_B_TAG =
-			complement(seq(SKIP, c('<'), c('b'), c('>'), star(any())));
+			complement(seq(SKIP, exact('<'), exact('b'), exact('>'), star(any())));
 	
-	public static final RegularLanguageIF<Character> B_TAG_NO_BTAG = seq(c('<'), c('b'), c('>'), NO_B_TAG, c('<'),
-			c('/'), c('b'), c('>'), c('!') );
+	public static final RegularLanguageIF<Character> B_TAG_NO_BTAG = seq(exact('<'), exact('b'), exact('>'), NO_B_TAG, exact('<'),
+			exact('/'), exact('b'), exact('>'), exact('!') );
 
 }

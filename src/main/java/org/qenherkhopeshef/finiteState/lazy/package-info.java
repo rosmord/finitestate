@@ -51,7 +51,7 @@
  *   <li> Package {@link org.qenherkhopeshef.finitestate.lazy.character} contains auxiliary classes
  *       usable when the entry is character-based. See below for an example of use.
  *   <li> A more generic example is explained below.
- *   <li> Customisation of the language will usually involve implementing {@link org.qenherkhopeshef.finitestate.lazy#LazyLabelIF}
+ *   <li> Customisation of the language will usually involve implementing {@link LazyLabelIF}
  * </ul>
  * the language is built with static methods from 
  * {@link org.qenherkhopeshef.finitestate.lazy.RegularLanguageIF} .
@@ -135,7 +135,7 @@
  *                       .build();
  *       String s = "dhfjhdfsh0023.dfsd35fds";
  *       toMatch = StringToListHelper.fromString(s);
- *       rec.recognizesBeginning(toMatch).ifPresent((m)-> {System.out.println(m);});  
+ *       rec.recognizesBeginning(toMatch).ifPresent((m)-&gt; {System.out.println(m);});  
  * </pre>
  * <h3>Second example : generic search with custom labels</h3>
  * <p>We want to match tagged text. Each word in the entry will be tagged with its part of speach.
@@ -162,26 +162,26 @@
  *
  *
  *	public static RegularLanguageIF<DemoWord> textLabel(String text) {
- *		return RegularLanguageFactory.label(demoWord -> demoWord.getWord().equals(text));
+ *		return RegularLanguageFactory.label(demoWord -&gt; demoWord.getWord().equals(text));
  *	}
  *
  *	public static RegularLanguageIF<DemoWord> posLabel(String partOfSpeech) {
- *			return RegularLanguageFactory.label(demoWord -> demoWord.getPartOfSpeech().equals(partOfSpeech));
+ *			return RegularLanguageFactory.label(demoWord -&gt; demoWord.getPartOfSpeech().equals(partOfSpeech));
  *	}
  * }
  * </pre>
  * 
  * Now, we can build regular languages on DemoWords :
  * <pre>
- * RegularExtractor<DemoWord> subjectVerbeExtractor =
- *				RegularExtractor.<DemoWord>getBuilder()
+ * RegularExtractor&lt;DemoWord&gt; subjectVerbeExtractor =
+ *				RegularExtractor.&lt;DemoWord&gt;getBuilder()
  *						.part(DemoWordLabelHelper.posLabel("NN"))
  *						.part(RegularLanguageFactory.skip())
  *						.part(RegularLanguageFactory.seq(
  *								DemoWordLabelHelper.posLabel("VB"),
  *								RegularLanguageFactory.opt(DemoWordLabelHelper.posLabel("ADV"))))
  *						.build();
- * List<List<Integer>> l = subjectVerbeExtractor.search(Arrays.asList(
+ * List&lt;List&lt;Integer&gt;&gt; l = subjectVerbeExtractor.search(Arrays.asList(
  *				new DemoWord("the", "ART"),   //0
  * 				new DemoWord("big", "ADJ"), // 1
  *				new DemoWord("cat", "NN"), // 2

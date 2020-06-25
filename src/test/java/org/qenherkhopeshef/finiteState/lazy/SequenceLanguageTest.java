@@ -2,14 +2,12 @@ package org.qenherkhopeshef.finitestate.lazy;
 
 import org.qenherkhopeshef.finitestate.lazy.RegularLanguageIF;
 import org.junit.Test;
-import org.qenherkhopeshef.finitestate.lazy.character.CharacterLanguageFactory;
 import org.qenherkhopeshef.finitestate.lazy.character.StringToListHelper;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.qenherkhopeshef.finitestate.lazy.SampleAutomata.*;
 
-import static org.qenherkhopeshef.finitestate.lazy.character.CharacterLanguageFactory.*;
 import static org.qenherkhopeshef.finitestate.lazy.RegularLanguageFactory.*;
 
 public class SequenceLanguageTest {
@@ -17,7 +15,7 @@ public class SequenceLanguageTest {
 
 	@Test
 	public void testABC() {
-		RegularLanguageIF<Character> abc = CharacterLanguageFactory.c("abc");
+		RegularLanguageIF<Character> abc = RegularLanguageFactory.exactSequence('a', 'b', 'c');
 		assertTrue(abc.recognize(StringToListHelper.fromString("abc")));
 		assertFalse(abc.recognize(StringToListHelper.fromString("a")));
 		assertFalse(abc.recognize(StringToListHelper.fromString("c")));
@@ -78,8 +76,8 @@ public class SequenceLanguageTest {
 	public void test_contain_toto_and_titi() {
 		RegularLanguageIF<Character> rec =
 				inter(
-						seq(star(any()), c("toto"), star(any())),
-						seq(star(any()), c("titi"), star(any()))
+						seq(star(any()), exactSequence('t','o','t', 'o'), star(any())),
+						seq(star(any()), exactSequence('t', 'i', 't', 'i'), star(any()))
 				);
 		
 		assertTrue(rec.recognize(StringToListHelper.fromString("un essai avec toto suivi de titit ahahah.")));
@@ -94,8 +92,8 @@ public class SequenceLanguageTest {
 	public void test_contain_ele_and_leve() {
 		RegularLanguageIF<Character> rec=
 				inter(
-						seq(star(any()), c("ele"), star(any())),
-						seq(star(any()), c("lev"), star(any())));
+						seq(star(any()), exactSequence('e','l','e'), star(any())),
+						seq(star(any()), exactSequence('l','e','v'), star(any())));
 
 		assertTrue(rec.recognize(StringToListHelper.fromString("un essai avec eleve.")));
 		assertFalse(rec.recognize(StringToListHelper.fromString("un essai avec aucun")));
