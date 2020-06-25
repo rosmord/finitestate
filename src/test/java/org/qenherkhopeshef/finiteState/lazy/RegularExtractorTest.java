@@ -2,7 +2,6 @@ package org.qenherkhopeshef.finitestate.lazy;
 
 import org.qenherkhopeshef.finitestate.lazy.RegularExtractor;
 import org.junit.Test;
-import org.qenherkhopeshef.finitestate.lazy.character.StringToListHelper;
 
 import java.util.Arrays;
 import java.util.List;
@@ -24,7 +23,7 @@ public class RegularExtractorTest {
 				.part(plus(range('0', '9')))
 				.build();
 		String text = "il y a 100 manières de travailler 2 à 4.";
-		List<List<Integer>> res = extractor.search(StringToListHelper.fromString(text));
+		List<List<Integer>> res = extractor.search(CharHelper.fromString(text));
 		List<String> extracted = res.stream().map(r -> text.substring(r.get(0), r.get(1))).collect(Collectors.toList());
 		assertEquals(Arrays.asList("1", "0", "0", "2", "4"), extracted);
 	}
@@ -39,7 +38,7 @@ public class RegularExtractorTest {
 				.part(outOfRange('0', '9'))
 				.build();
 		String text = "il y a 100 manières de travailler 2 à 4.";
-		List<List<Integer>> res = extractor.search(StringToListHelper.fromString(text));
+		List<List<Integer>> res = extractor.search(CharHelper.fromString(text));
 		List<String> extracted = res.stream().map(r -> text.substring(r.get(0), r.get(1))).collect(Collectors.toList());
 		assertEquals(Arrays.asList("100", "2", "4"), extracted);
 	}

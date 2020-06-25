@@ -7,7 +7,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.junit.Test;
-import org.qenherkhopeshef.finitestate.lazy.character.StringToListHelper;
 
 import static org.junit.Assert.*;
 import static org.qenherkhopeshef.finitestate.lazy.RegularLanguageFactory.*;
@@ -20,7 +19,7 @@ public class ReportingLanguageRecognizerTest {
 				RegularLanguageFactory.exact('a'),
 				RegularLanguageFactory.exact('b')
 		);
-		assertTrue(rec.recognize(StringToListHelper.fromString("3ab")));
+		assertTrue(rec.recognize(CharHelper.fromString("3ab")));
 		assertEquals(Arrays.asList(1, 2, 3), rec.getMarkers());
 	}
 
@@ -30,9 +29,9 @@ public class ReportingLanguageRecognizerTest {
 				RegularLanguageFactory.star(RegularLanguageFactory.exact('a')),
 				RegularLanguageFactory.exact('b')
 		);
-		rec.recognize(StringToListHelper.fromString("ab"));
+		rec.recognize(CharHelper.fromString("ab"));
 		assertEquals(Arrays.asList(1, 2), rec.getMarkers());
-		rec.recognize(StringToListHelper.fromString("aaab"));
+		rec.recognize(CharHelper.fromString("aaab"));
 		assertEquals(Arrays.asList(3, 4), rec.getMarkers());
 	}
 
@@ -49,16 +48,16 @@ public class ReportingLanguageRecognizerTest {
 				RegularLanguageFactory.skip(), RegularLanguageFactory.exact('$')
 		);
 
-		assertTrue(rec.recognize(StringToListHelper.fromString("un essai 12334.34 dsfsdfd$")));
-		assertTrue(rec.recognize(StringToListHelper.fromString("un essai 12334 dsfsdfd$")));
-		assertTrue(rec.recognize(StringToListHelper.fromString("un essai -12334 dsfsdf$")));
-		assertFalse(rec.recognize(StringToListHelper.fromString("un essai -12334$")));
-		assertFalse(rec.recognize(StringToListHelper.fromString("un essai$")));
+		assertTrue(rec.recognize(CharHelper.fromString("un essai 12334.34 dsfsdfd$")));
+		assertTrue(rec.recognize(CharHelper.fromString("un essai 12334 dsfsdfd$")));
+		assertTrue(rec.recognize(CharHelper.fromString("un essai -12334 dsfsdf$")));
+		assertFalse(rec.recognize(CharHelper.fromString("un essai -12334$")));
+		assertFalse(rec.recognize(CharHelper.fromString("un essai$")));
 
-		assertTrue(rec.recognize(StringToListHelper.fromString("et -233.66 et 3.1416 !!$")));
+		assertTrue(rec.recognize(CharHelper.fromString("et -233.66 et 3.1416 !!$")));
 		assertEquals(Arrays.asList(3, 10, 11, 23, 24), rec.getMarkers());
 		// Test with un-matching pattern
-		boolean result = rec.recognize(StringToListHelper.fromString("avec que du texte"));
+		boolean result = rec.recognize(CharHelper.fromString("avec que du texte"));
 		assertFalse(result);
 		assertEquals(-1, rec.endingPosition());
 	}
@@ -66,9 +65,9 @@ public class ReportingLanguageRecognizerTest {
 	@Test
 	public void testEmpty() {
 		RegularLanguageIF<Character> r0 = RegularLanguageFactory.seq();
-		assertTrue("Empty is recognized", r0.recognize(StringToListHelper.fromString("")));
+		assertTrue("Empty is recognized", r0.recognize(CharHelper.fromString("")));
 		ReportingLanguageRecognizer<Character> recognizer = new ReportingLanguageRecognizer<Character>(r0);
-		boolean b = recognizer.recognize(StringToListHelper.fromString("un essai"));
+		boolean b = recognizer.recognize(CharHelper.fromString("un essai"));
 		assertTrue("Empty is recognized", b);
 		assertEquals(Arrays.asList(0), recognizer.getMarkers());
 	}
@@ -85,11 +84,11 @@ public class ReportingLanguageRecognizerTest {
 		);
 
 		ReportingLanguageRecognizer<Character> rec = new ReportingLanguageRecognizer<Character>(l);
-		boolean res = rec.recognize(StringToListHelper.fromString("abcd"));
+		boolean res = rec.recognize(CharHelper.fromString("abcd"));
 		assertTrue(res);
 		assertEquals(1, rec.getMarkers().get(0).intValue());
 		assertEquals(1, rec.endingPosition());
-		res = rec.recognize(StringToListHelper.fromString("bcd"));
+		res = rec.recognize(CharHelper.fromString("bcd"));
 		assertTrue(res);
 		assertEquals(1, rec.getMarkers().get(0).intValue());
 		assertEquals(1, rec.endingPosition());
@@ -104,7 +103,7 @@ public class ReportingLanguageRecognizerTest {
 				skip(),
 				plus(range('0', '9'))
 		);
-		assertTrue(rep.recognize(StringToListHelper.fromString(text)));
+		assertTrue(rep.recognize(CharHelper.fromString(text)));
 		List<Integer> res = rep.getMarkers();
 		assertEquals(2, res.size());
 		assertEquals("1", text.substring(res.get(0), res.get(1)));

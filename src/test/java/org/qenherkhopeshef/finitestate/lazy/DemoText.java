@@ -32,7 +32,7 @@
  * pris connaissance de la licence CeCILL, et que vous en avez accepté les
  * termes.
  */
-package org.qenherkhopeshef.finitestate.lazy.character;
+package org.qenherkhopeshef.finitestate.lazy;
 
 import org.qenherkhopeshef.finitestate.lazy.RegularExtractor;
 
@@ -61,7 +61,7 @@ public class DemoText {
                         .part(exact('.'))
                         .build();
         String s = "dhfjhdfsh0023.dfsd35fds";
-        List<Character> toMatch = StringToListHelper.fromString(s);
+        List<Character> toMatch = CharHelper.fromString(s);
         rec.recognizesBeginning(toMatch).ifPresent((m) -> {
             System.out.println(m);
         });
@@ -75,7 +75,7 @@ public class DemoText {
                         .part(plus(range('0', '9')))
                         .part(outOfRange('0', '9'))
                         .build();
-        List<Character> toMatch = StringToListHelper.fromString(s);
+        List<Character> toMatch = CharHelper.fromString(s);
         rec1.recognizesBeginning(toMatch).ifPresent((m) -> {
             System.out.println(m);
         });
@@ -93,7 +93,7 @@ public class DemoText {
                         ))
                         .build();
         String s = "xa00z00bxa11bxa22222bx";
-        List<List<Integer>> result = rec.search(StringToListHelper.fromString(s));
+        List<List<Integer>> result = rec.search(CharHelper.fromString(s));
         for (List<Integer> posList: result) {
             System.out.println(s.substring(posList.get(0), posList.get(1)));
         }
