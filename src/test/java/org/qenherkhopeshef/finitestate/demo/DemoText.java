@@ -32,11 +32,12 @@
  * pris connaissance de la licence CeCILL, et que vous en avez accepté les
  * termes.
  */
-package org.qenherkhopeshef.finitestate.lazy;
+package org.qenherkhopeshef.finitestate.demo;
 
-import org.qenherkhopeshef.finitestate.lazy.RegularExtractor;
 
 import java.util.List;
+import org.qenherkhopeshef.finitestate.lazy.CharHelper;
+import org.qenherkhopeshef.finitestate.lazy.RegularExtractor;
 
 import static org.qenherkhopeshef.finitestate.lazy.RegularLanguageFactory.*;
 
@@ -83,8 +84,8 @@ public class DemoText {
 
     private static void demoTextComplex() {
         // A demonstration with a complex language :
-        // recognise strings starting with 'a' and ending with 'z', except when there
-        // is a 'b' inside them.
+        // recognise strings starting with 'a' and ending with 'b', except when there
+        // is a 'z' inside them.
         RegularExtractor<Character> rec
                 = RegularExtractor.<Character>getBuilder()
                         .part(inter(

@@ -65,7 +65,7 @@ public final class RegularLanguageFactory {
      * @return a language which is the sequence of l1, l2...
      */
     @SafeVarargs
-	public static <T> RegularLanguageIF<T> seq(
+    public static <T> RegularLanguageIF<T> seq(
             RegularLanguageIF<T>... elts) {
         return seq(Arrays.asList(elts));
     }
@@ -336,66 +336,76 @@ public final class RegularLanguageFactory {
     public static <T> RegularLanguageIF<T> opt(RegularLanguageIF<T> l) {
         return union(emptySequence(), l);
     }
-    
+
     /**
      * Limits a language to a certain maximum length.
+     *
      * @param <T>
      * @param l the language to limit
      * @param maxLength the maximum length. If 0, will correspond to "no limit".
-     * @return the intersection of l and of the language of strings of maxLength maxLength.
+     * @return the intersection of l and of the language of strings of maxLength
+     * maxLength.
      */
-    public static<T> RegularLanguageIF<T> maxLength(RegularLanguageIF<T> l, int maxLength) {
-        if (maxLength == 0)
+    public static <T> RegularLanguageIF<T> maxLength(RegularLanguageIF<T> l, int maxLength) {
+        if (maxLength == 0) {
             return l;
-        else {
+        } else {
             return inter(l, maxLength(maxLength));
-        }   
+        }
     }
-    
+
     /**
      * The language made of arbitrary sequences of length from 0 to maxLength.
+     *
      * @param <T>
      * @param maxLength
-     * @return 
+     * @return
      */
-    public static<T> RegularLanguageIF<T> maxLength(int maxLength) {
-        List<RegularLanguageIF<T>> res= new ArrayList<>();
-        for (int i= 0; i <= maxLength; i++) {           
-            res.add(exactLength(i));
+    public static <T> RegularLanguageIF<T> maxLength(int maxLength) {      
+        if (maxLength == 0) {
+            return emptySequence();
+        } else {
+            RegularLanguageIF<T> res = opt(any());
+            for (int i = 1; i < maxLength; i++) {
+                res = opt(seq(any(), res));
+            }
+            return res;
         }
-        return union(res);
     }
-    
+
     /**
      * The language of arbitrary sequences of length length.
+     *
      * @param <T>
      * @param length exact length of the sequence.
-     * @return 
+     * @return
      */
-    public static<T> RegularLanguageIF<T> exactLength(int length) {
+    public static <T> RegularLanguageIF<T> exactLength(int length) {
         if (length == 0) {
             return emptySequence();
         } else {
-            List<RegularLanguageIF<T>> res= new ArrayList<>();
-            for (int i= 0; i < length; i++) {
+            List<RegularLanguageIF<T>> res = new ArrayList<>();
+            for (int i = 0; i < length; i++) {
                 res.add(any());
             }
             return seq(res);
         }
     }
-    
+
     /**
-     * Builds a sequence which matches an exact list of tokens, passed as varargs.
+     * Builds a sequence which matches an exact list of tokens, passed as
+     * varargs.
+     *
      * @param <T>
      * @param tokens
      * @return
      */
     @SafeVarargs
     public static <T> RegularLanguageIF<T> exactSequence(T... tokens) {
-    	List<RegularLanguageIF<T>> elts = new ArrayList<>();
-    	for (T tok: tokens) {
-    		elts.add(exact(tok));
-    	}
-    	return seq(elts);
-	}    
+        List<RegularLanguageIF<T>> elts = new ArrayList<>();
+        for (T tok : tokens) {
+            elts.add(exact(tok));
+        }
+        return seq(elts);
+    }
 }

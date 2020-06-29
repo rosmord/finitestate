@@ -48,9 +48,6 @@
  *   <li> direct match might be done using 
  *  {@link org.qenherkhopeshef.finitestate.lazy.RegularLanguageIF#recognize}</li>
  *   <li> in general, however, one will use {@link org.qenherkhopeshef.finitestate.lazy.RegularExtractor}</li>
- *   <li> Package {@link org.qenherkhopeshef.finitestate.lazy.character} contains auxiliary classes
- *       usable when the entry is character-based. See below for an example of use.
- *   <li> A more generic example is explained below.
  *   <li> Customisation of the language will usually involve implementing {@link LazyLabelIF}
  * </ul>
  * the language is built with static methods from 
@@ -120,10 +117,7 @@
  * <p> When working, for instance, on text databases, we wish to be able to 
  * parallelize searches. So the same language should be usable to search multiple 
  * texts at once. Hence, the search result should be stored in objects which represent
- * a particular search, not the language itself. The current version uses a simple list 
- * of languages to represent a complex request, but this is not very nice. We might 
- * make the SequenceLanguage public, but it would'nt be logical if we make it public, but 
- * hide the others.</p>
+ * a particular search, not the language itself.</p>
  * <h3>First example : character-based</h3>
  * <p>An automaton to extract numbers from a text.</p>
  * <pre>
