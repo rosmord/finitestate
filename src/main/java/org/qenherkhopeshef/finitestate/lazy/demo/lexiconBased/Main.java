@@ -1,4 +1,4 @@
-package org.qenherkhopeshef.finitestate.lazy.lexiconBased;
+package org.qenherkhopeshef.finitestate.lazy.demo.lexiconBased;
 
 import org.qenherkhopeshef.finitestate.lazy.RegularExtractor;
 import org.qenherkhopeshef.finitestate.lazy.RegularLanguageFactory;
@@ -6,6 +6,7 @@ import org.qenherkhopeshef.finitestate.lazy.RegularLanguageFactory;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
+import org.qenherkhopeshef.finitestate.lazy.MatchResult;
 
 /**
  * A simple example of what can be done with our generic classes.
@@ -40,7 +41,7 @@ public class Main {
                 new DemoWord("sang", "VB"), // 12
                 new DemoWord("loudly", "ADV") // 13
         );
-        List<List<Integer>> l = subjectVerbeExtractor.search(text);
+        List<MatchResult> l = subjectVerbeExtractor.search(text);
         l.stream().map(m -> m.stream().map(pos -> text.get(pos).getWord()).collect(Collectors.toList())).forEach(res -> System.out.println(res));
     }
 }

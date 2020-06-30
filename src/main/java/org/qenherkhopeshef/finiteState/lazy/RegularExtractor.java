@@ -49,9 +49,9 @@ import java.util.Optional;
  * (l1)(l2)....(ln). In case of match, it'a possible to know exactly what part
  * of the text respectively matches l1, l2...ln.</p>
  * <p>
- * In other words, the main language is always a sequence of languages.
- * It means, for instance, that we want to recognize ([A-Z))([a-z]+), where we
- * have two sub-languages, <code>([A-Z))</code> and <code>([a-z]+)</code>.</p>
+ * In other words, the main language is always a sequence of languages. It
+ * means, for instance, that we want to recognize ([A-Z))([a-z]+), where we have
+ * two sub-languages, <code>([A-Z))</code> and <code>([a-z]+)</code>.</p>
  * <p>
  * Note that, as we are working within the boundaries of language theory, we
  * don't use ideas like "greedy" operators and the like. </p>
@@ -59,10 +59,11 @@ import java.util.Optional;
  * the notion of sequence is important, because the recognizer will provide a
  * marker indicating <em>what</em> was matched.
  * <p>
- * The marker is a list <em>v</em> of integer positions. Each integer <em>v[k]</em> is
- * the
- * <b>position</b> where the matched part for language <em>k</em> <b>finishes</b>.
- * So, the first part is recognized between position 0 and v[0].
+ * The marker is a list <em>v</em> of integer positions. Each integer
+ * <em>v[k]</em> is the
+ * <b>position</b> where the matched part for language <em>k</em>
+ * <b>finishes</b>. So, the first part is recognized between position 0 and
+ * v[0].
  *
  * <dl>
  * <dd>position</dd>
@@ -87,14 +88,20 @@ import java.util.Optional;
  *                       .part(not(exact('.')))
  *                       .build();
  * </pre> Please note the use of
- * <code>RegularExtractor.&lt;Character&gt;getBuilder()</code>. The type is needed,
- * else the inference system will fail.
+ * <code>RegularExtractor.&lt;Character&gt;getBuilder()</code>. The type is
+ * needed, else the inference system will fail.
  *
- * <p>Also note that if you need a broader "grain", you can use </p>
+ * <p>
+ * Also note that if you need a broader "grain", you can use </p>
  *
  * <p>
  * This class is <strong>thread safe.</strong> It means that the same extractor
  * can be used for multiple texts in different threads if needed.
+ * </p>
+ *
+ * <p>
+ * The sequence of languages used here is always at least one element long. If
+ * it is empty, it's replaced at build time by the list emptySequence().
  * </p>
  *
  * @author rosmord
@@ -105,14 +112,36 @@ public class RegularExtractor<T> {
     private final List<RegularLanguageIF<T>> language;
     private final int postContextSize;
 
+    /**
+     * Builds an extractor for the sequence of languages described in parts. If
+     * the list is empty, it will act as if it was the one element list
+     * emptySequence().
+     *
+     * @param parts a list of languages ; if empty, see above.
+     */
     public RegularExtractor(List<RegularLanguageIF<T>> parts) {
+        if (parts == null || parts.isEmpty()) {
+            parts = Arrays.asList(RegularLanguageFactory.emptySequence());
+        }
         this.language = new ArrayList<>(parts);
         this.postContextSize = 0;
     }
 
+    /**
+     * Builds an extractor for the sequence of languages described in parts. If
+     * the argument list is empty, it will act as if it was the one element list
+     * emptySequence().
+     *
+     * @param parts : the languages which make the sequence. If empty, see
+     * above.
+     */
     @SafeVarargs
     public RegularExtractor(RegularLanguageIF<T>... parts) {
-        this.language = new ArrayList<>(Arrays.asList(parts));
+        if (parts == null || parts.length == 0) {
+            this.language = Arrays.asList(RegularLanguageFactory.emptySequence());
+        } else {
+            this.language = new ArrayList<>(Arrays.asList(parts));
+        }
         this.postContextSize = 0;
     }
 
@@ -122,52 +151,93 @@ public class RegularExtractor<T> {
     }
 
     /**
-     * Builds a language with a "post context".
-     * In calling the search function (and currently only the search function), 
-     * actual recognition will involve the sequence of both mainLanguage and postContext,
-     * but the resulting match will consider only the part matched by the main language, 
-     * and the search will continue immediatly after this part.
+     * Builds a language with a "post context". In calling the search function
+     * (and currently only the search function), actual recognition will involve
+     * the sequence of both mainLanguage and postContext, but the resulting
+     * match will consider only the part matched by the main language, and the
+     * search will continue immediatly after this part.
+     *
      * @param <T>
      * @param mainLanguage
      * @param postContext
      * @return a RegularExtractor.
      */
-    public static<T> RegularExtractor<T> buildRegularExtractorWithPostContext(List<RegularLanguageIF<T>> mainLanguage, List<RegularLanguageIF<T>> postContext) {
+    public static <T> RegularExtractor<T> buildRegularExtractorWithPostContext(List<RegularLanguageIF<T>> mainLanguage, List<RegularLanguageIF<T>> postContext) {
         List<RegularLanguageIF<T>> allParts = new ArrayList<>(mainLanguage);
         allParts.addAll(postContext);
         return new RegularExtractor<>(allParts, postContext.size());
     }
+
     /**
      * Repeatedly search for matches of the regular language in the input.
      * <p>
      * Will return a list of list. Each sub list corresponds to a specific match
      * of the language. Elements of this list are the positions of the matched
-     * language parts. The first entry in a sublist is the position of the match
-     * ; the last entry is the position of the end of the match.
+     * language parts.
+     * <ul>
+     * <li>The first entry in a sublist is the position of the match</li>
+     * <li>the next entries are the positions between two parts</li>
+     * <li> the last entry is the position of the end of the last part and hence
+     * of the match as a whole
+     * </ul>
      *
      * @param input : the data to search in.
      * @return
      */
-    public List<List<Integer>> search(List<T> input) {
-        List<RegularLanguageIF<T>> toMatch= new ArrayList<>();
+    public List<MatchResult> search(List<T> input) {
+        return search(input, 0);
+    }
+
+    /**
+     * Search matches in the input, with a max length constraint.
+     *
+     * <p>
+     * Same as {@link #search(java.util.List)}, except that matches length will
+     * be limited.
+     * <p>
+     * It's possible to actually build a regular language with a max length, but
+     * the resulting system is quite resource-heavy.
+     *
+     * @param input the input to search in.
+     * @param maxLength the max length of matched text.
+     * @return
+     */
+    public List<MatchResult> search(List<T> input, int maxLength) {
+        List<RegularLanguageIF<T>> toMatch = new ArrayList<>();
         toMatch.add(RegularLanguageFactory.skip());
         toMatch.addAll(language);
         ReportingLanguageRecognizer<T> aux = new ReportingLanguageRecognizer<>(toMatch);
         aux.setEarlyStop(true);
-        ArrayList<List<Integer>> result= new ArrayList<>();
+        ArrayList<MatchResult> result = new ArrayList<>();
         boolean ok;
         // start of search position
-        int pos= 0;
+        int pos = 0;
         do {
-            ok= aux.recognize(pos, input);
+            ok = aux.recognize(pos, input);
             if (ok) {
+                int oldPos = pos;
                 List<Integer> positions = aux.getMarkers();
+
                 // Adds the result. Omit the post context, if any.
-                result.add(positions.subList(0, positions.size() - postContextSize));
-                // Next search position. Don't include post context in matched text.
-                pos= positions.get(positions.size() - 1 - postContextSize);
+                MatchResult matchResult = new MatchResult(positions.subList(0, positions.size() - postContextSize));
+                if (maxLength == 0 || matchResult.getMatchLength() <= maxLength) {
+                    result.add(matchResult);
+                    pos = matchResult.getLastPosition();
+                    // Failsafe system for empty match.
+                    if (pos == oldPos) {
+                        pos += 1;
+                    }
+                } else {
+                    // Failed match, look one step further.
+                    pos += 1;
+                }
+
+                // Stop the search if position is out of input.
+                if (pos > input.size()) {
+                    ok = false;
+                }
             }
-        } while(ok);
+        } while (ok);
         return result;
     }
 
@@ -198,12 +268,13 @@ public class RegularExtractor<T> {
      * </dl>
      *
      * @param tokens the list of tokens to match.
-     * @return an optional, which is emptySequence if no match occurred, or contains a
-     * list of positions if a match took place.
+     * @return an optional, which is emptySequence if no match occurred, or
+     * contains a list of positions if a match took place.
      */
     public Optional<List<Integer>> recognizesBeginning(List<T> tokens) {
-        if (postContextSize != 0)
+        if (postContextSize != 0) {
             throw new IllegalStateException("method not supported with post context");
+        }
         ReportingLanguageRecognizer<T> aux = new ReportingLanguageRecognizer<>(language);
         aux.setEarlyStop(true);
         boolean ok = aux.recognize(tokens);
@@ -241,13 +312,14 @@ public class RegularExtractor<T> {
      * </dl>
      *
      * @param tokens the list of tokens to match.
-     * @return an optional, which is emptySequence if no match occurred, or contains a
-     * list of positions if a match took place.
+     * @return an optional, which is emptySequence if no match occurred, or
+     * contains a list of positions if a match took place.
      */
     public Optional<List<Integer>> recognizesAll(List<T> tokens) {
-        if (postContextSize != 0)
+        if (postContextSize != 0) {
             throw new IllegalStateException("method not supported with post context");
-        
+        }
+
         ReportingLanguageRecognizer<T> aux = new ReportingLanguageRecognizer<>(language);
         aux.setEarlyStop(false);
         boolean ok = aux.recognize(tokens);
@@ -285,15 +357,18 @@ public class RegularExtractor<T> {
     }
 
     /**
-     * A builder for {@link RegularExtractor}.
-     * Don't create instances of this class with new, but with the static method
-     * {@link RegularExtractor#getBuilder()} or {@link RegularExtractor#getBuilder(org.qenherkhopeshef.finitestate.lazy.RegularLanguageIF) }
-     * @param <T> 
+     * A builder for {@link RegularExtractor}. Don't create instances of this
+     * class with new, but with the static method
+     * {@link RegularExtractor#getBuilder()} or {@link RegularExtractor#getBuilder(org.qenherkhopeshef.finitestate.lazy.RegularLanguageIF)
+     * }
+     *
+     * @param <T>
      */
     public static class Builder<T> {
 
         private final ArrayList<RegularLanguageIF<T>> languages = new ArrayList<>();
-
+        private int postContext = -1;
+        
         Builder() {
         }
 
@@ -307,6 +382,15 @@ public class RegularExtractor<T> {
             languages.add(l);
             return this;
         }
+        
+        /**
+         * Declares that the next parts will not be part of the actual match, but will serve as context.
+         * @return 
+         */
+        public Builder<T> startPostContext() {
+            this.postContext = languages.size();
+            return this;
+        }
 
         /**
          * Actual creation of the extractor.
@@ -314,7 +398,10 @@ public class RegularExtractor<T> {
          * @return
          */
         public RegularExtractor<T> build() {
-            return new RegularExtractor<>(languages);
+            if (postContext == -1)
+                return new RegularExtractor<>(languages);
+            else
+                return new RegularExtractor<>(languages, postContext);
         }
     }
 }

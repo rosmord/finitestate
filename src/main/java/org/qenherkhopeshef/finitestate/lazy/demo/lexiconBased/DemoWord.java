@@ -1,4 +1,4 @@
-package org.qenherkhopeshef.finitestate.lazy.lexiconBased;
+package org.qenherkhopeshef.finitestate.lazy.demo.lexiconBased;
 
 public class DemoWord {
 	private String word;

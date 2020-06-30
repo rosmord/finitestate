@@ -3,13 +3,15 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.qenherkhopeshef.finitestate.lazy;
+package org.qenherkhopeshef.finitestate.lazy.demo;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.function.Consumer;
 import org.qenherkhopeshef.finitestate.lazy.RegularExtractor;
+import org.qenherkhopeshef.finitestate.lazy.RegularExtractor;
+import org.qenherkhopeshef.finitestate.lazy.RegularLanguageIF;
 import static org.qenherkhopeshef.finitestate.lazy.RegularLanguageFactory.*;
 
 /**
@@ -33,7 +35,7 @@ import static org.qenherkhopeshef.finitestate.lazy.RegularLanguageFactory.*;
  */
 public class SpeedTest {
 
-    private final static int MAX_SIZE = 1000;
+    private final static int MAX_SIZE = 100_000;
     private final RegularLanguageIF<Character> a_star_b;
     private final RegularLanguageIF<Character> a_star_b_minus_cd;
     private final RegularLanguageIF<Character> cd;
@@ -44,12 +46,7 @@ public class SpeedTest {
     private static final String MATCH = "match";
 
     private final HashMap<String, List<Character>> testMap = new HashMap<>();
-    private final RegularLanguageIF<Character> a_star_b_4;
-    private final RegularLanguageIF<Character> a_star_b_10;
-    private final RegularLanguageIF<Character> a_star_b_20;
-    private final RegularExtractor<Character> abcd4rec;
-    private final RegularExtractor<Character> abcd10rec;
-    private final RegularExtractor<Character> abcd20rec;
+   
 
     public SpeedTest() {
         a_star_b = seq(
@@ -61,14 +58,7 @@ public class SpeedTest {
         a_star_b_minus_cd = inter(a_star_b, complement(cd));
         a_star_b_recognizer = RegularExtractor.getBuilder(a_star_b).build();
         a_star_b_minus_cd_recognizer = RegularExtractor.getBuilder(a_star_b_minus_cd).build();
-        a_star_b_4 = maxLength(a_star_b_minus_cd, 4);
-        a_star_b_10 = maxLength(a_star_b_minus_cd, 10);
-        a_star_b_20 = maxLength(a_star_b_minus_cd, 20);
-
-        abcd4rec = RegularExtractor.getBuilder(a_star_b_4).build();
-        abcd10rec = RegularExtractor.getBuilder(a_star_b_10).build();
-        abcd20rec = RegularExtractor.getBuilder(a_star_b_20).build();
-
+       
         int size = 10;
         while (size <= MAX_SIZE) {
             testMap.put(MATCH + size, createMatch(size));
@@ -148,15 +138,13 @@ public class SpeedTest {
 
     public void run() {
         timeSearch("a.*b", a_star_b_recognizer);
-        //timeSearch("a.*b moins .*cd.*", a_star_b_minus_cd_recognizer);
-        //timeSearch("limit 4", abcd4rec);
-        //timeSearch("limit 10", abcd10rec);
-        //timeSearch("limit 20", abcd20rec);
+        timeSearch("a.*b moins .*cd.*", a_star_b_minus_cd_recognizer);
         
-        for (int i = 2; i < 100; i++) {
-            RegularLanguageIF<Character> lang = maxLength(a_star_b_minus_cd, i);
+        int maxLengths[] = {4, 20};
+        for (int m: maxLengths) {
+            RegularLanguageIF<Character> lang = maxLength(a_star_b_minus_cd, m);
             RegularExtractor<Character> rec = RegularExtractor.getBuilder(lang).build();
-            timeSearch("limit "+i, rec);
+            timeSearch("limit "+m, rec);
         }
     }
 

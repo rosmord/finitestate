@@ -1,4 +1,4 @@
-package org.qenherkhopeshef.finitestate.lazy.lexiconBased;
+package org.qenherkhopeshef.finitestate.lazy.demo.lexiconBased;
 
 import org.qenherkhopeshef.finitestate.lazy.RegularLanguageFactory;
 import org.qenherkhopeshef.finitestate.lazy.RegularLanguageIF;

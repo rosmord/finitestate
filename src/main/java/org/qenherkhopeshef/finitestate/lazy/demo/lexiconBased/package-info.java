@@ -1,4 +1,4 @@
 /**
  * A simple base example for the lazy automata, just to show its power.
  */
-package org.qenherkhopeshef.finitestate.lazy.lexiconBased;
+package org.qenherkhopeshef.finitestate.lazy.demo.lexiconBased;

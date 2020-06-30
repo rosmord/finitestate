@@ -37,6 +37,7 @@ package org.qenherkhopeshef.finitestate.demo;
 
 import java.util.List;
 import org.qenherkhopeshef.finitestate.lazy.CharHelper;
+import org.qenherkhopeshef.finitestate.lazy.MatchResult;
 import org.qenherkhopeshef.finitestate.lazy.RegularExtractor;
 
 import static org.qenherkhopeshef.finitestate.lazy.RegularLanguageFactory.*;
@@ -94,9 +95,9 @@ public class DemoText {
                         ))
                         .build();
         String s = "xa00z00bxa11bxa22222bx";
-        List<List<Integer>> result = rec.search(CharHelper.fromString(s));
-        for (List<Integer> posList: result) {
-            System.out.println(s.substring(posList.get(0), posList.get(1)));
+        List<MatchResult> result = rec.search(CharHelper.fromString(s));
+        for (MatchResult posList: result) {
+            System.out.println(s.substring(posList.getFirstPosition(), posList.getLastPosition()));
         }
     }
 }
