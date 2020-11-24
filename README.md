@@ -275,6 +275,10 @@ the time to parse the string is linear regarding the length of the string. Basic
 The speed depends heavily on the pattern, though. For instance, replacing `a(b|c+)*de` with `a(c*)de` gives a speed of 
 $1.10^{-6}s$
 
+Memory tests should be done too ; I suspect in some cases, the library may be very memory-hungry, as :
+- the size of a deterministic automaton may be exponentially larger than the size of the non-deterministic equivalent ;
+- the library allows one to create seemingly simple automaton (for instance `any()`) which would contain hundreds of 
+  transitions if fully written.
 
 
 ## Licence
