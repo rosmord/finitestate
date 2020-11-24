@@ -59,18 +59,25 @@ give us the position of each part. See below.
 ~~~java
  String s = "dhfjhdfsh0023.dfsd35fds";
  List<Character> toMatch = StringToListHelper.fromString(s);
- List<List<Integer>> result = rec.search(toMatch);
+ List<MatchResult> result = rec.search(toMatch);
 ~~~
 
-The result of the search will be a list of matches. **Each match is a list of positions in the String.** Each position, save the last one, is the position of the beginning of the corresponding part. The last position is the position (exclusive) of the *end* of the last part.
+The result of the search will be a list of MatchResult. **Each match result indicates the positions of the matched text in the searched list**. A `MatchResult` has methods to access the 
+positions of the whole matched text, as well as the positions of the text matched by individual `parts`.
+
 
 Thus, the text between the first position and the last position is the whole match. We could write :
 ~~~java
-for (List<Integer> posList: result) {
-            System.out.println(s.substring(posList.get(0), posList.get(poList.size() - 1)));
+for (MatchResult m: result) {
+	System.out.println(
+		s.substring(m.getFirstPosition(),
+		            m.getLastPosition()));
 }
 ~~~
 to list them.
+
+As we are often interested to know the matched text, the `MatchResult` class has a method called `extractFullMatch` 
+to extract it.
 
 ## The elements of `RegularLanguageFactory`
 
@@ -129,7 +136,7 @@ exactLength(int length)
 : recognises all lists of length `length`.
 
 maxLength(RegularLanguageIF`<T>` l, int maxLength)
-: recognises all lists **in language `l`** of length ≤ `maxLength`. Very useful if you want to limit the length of a possible match.
+: recognises all lists **in language `l`** of length ≤ `maxLength`. Useful if you want to limit the length of a possible match. Note, however, that it's quite expensive in terms of performances. There is an alternative version of the `search` methods which is more efficient.
 
 
 ### Combinations of languages
@@ -218,7 +225,7 @@ Now, we can build regular languages on DemoWords. This one will recognize texts 
  				DemoWordLabelHelper.posLabel("VB"),
  				RegularLanguageFactory.opt(DemoWordLabelHelper.posLabel("ADV"))))
  		.build();
-  List<List<Integer>> l = subjectVerbeExtractor.search(Arrays.asList(
+  List<MatchResult> l = subjectVerbeExtractor.search(Arrays.asList(
  		new DemoWord("the", "ART"),   //0
   		new DemoWord("big", "ADJ"), // 1
  		new DemoWord("cat", "NN"), // 2
@@ -240,7 +247,11 @@ Now, we can build regular languages on DemoWords. This one will recognize texts 
 
 To limit the size of a matched sequence to 𝑛, the system builds the union of the empty sequence, the sequence with one token, the sequence with two tokens... the sequence with 𝑛 tokens.
 
-We then intersect this language with the language whose length we want to limit.
+We then intersect this language with the language whose length we want to limit. 
+
+This automaton is a bit expensive, however. As the rest of
+the library, the search complexity is O(n), where *n* is the size of the input. The problem is that the overhead due to the automaton itself is very large.  We provide a more efficient way
+to do this with a revised version of the `search` method.
 
 ## Differences with "usual" regular expressions
 
@@ -252,6 +263,19 @@ For instance, `complement(exact('a'))` is the complement of the Character-based 
 We had originally named the operation `not`, instead of `complement`, but it was very ambiguous and not readable at all.
 
 If you want the equivalent of regexp `/[^a]/`, you would use `different('a')`.
+
+## Performances
+I can't vouch for the performances of the library in terms of *speed* on the *actual patterns* you will use, but 
+both theory and practice indicate that it performs in *linear time*, even for patterns for which usual libraries 
+will suffer from exponentially bad results.
+
+For instance, the demo `WorstCaseTest` shows that with the expression `a(b|c+)*de`, and tests on strings of the form "ac*",
+the time to parse the string is linear regarding the length of the string. Basically, the ratio $\frac{time}{number of chars}$ is more or less $5.10^{-6}s$ for a char.
+
+The speed depends heavily on the pattern, though. For instance, replacing `a(b|c+)*de` with `a(c*)de` gives a speed of 
+$1.10^{-6}s$
+
+
 
 ## Licence
 
