@@ -1,5 +1,10 @@
 # A library for searching using regular languages on complex alphabets
 
+**Note** : the current `gradlew` file runs under java 8, and will have problems with recent versions of Java. 
+On the other hand, the current `build.gradle` is not usable with recent versions of gradle.
+
+I'll fix it one day. Meanwhile, adapting the `build.gradle` file is relatively easy. I don't do it yet because I would need to update the code which publishes the library to MavenCentral. **Why on earth does gradle lack the support of old gradle files? retrocompatibility is supposed to be a strong point of Java**.
+
 Most regular expression libraries work on character strings, which is somehow a limitation in a number of cases.
 
 For instance, in some cases, you want to search on a list of structured tokens. Some of your criteria
