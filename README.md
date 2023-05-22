@@ -22,11 +22,12 @@ This library allows you to search the occurrences of some patterns on lists of t
 
 The patterns are basically a combination of 
 
-- labels, which recognize individual tokens depending on their features
+- labels, which recognize individual tokens depending on their features    
+
+  - the simpler label is of course an element of type T. For Characters, a label of 'a' would recognize the character 'a'.
+  - more complex labels might recognize tokens depending on some of their characteristics. For instance, all characters whose code is larger than the code of 'a';
+  - you can create your own labels - it's more or less necessary when you work with custom classes as tokens.
     
-    - the simpler label is of course an element of type T. For Characters, a label of 'a' would recognize the character 'a'.
-    - more complex labels might recognize tokens depending on some of their characteristics. For instance, all characters whose code is larger than the code of 'a';
-    - you can create your own labels - it's more or less necessary when you work with custom classes as tokens.
 - the empty list
 - concatenation of languages
 - repetition of languages
@@ -43,10 +44,12 @@ All method will search the *shortest possible string*.
 To use this library to search in character lists :
 
 1. import the static methods from `RegularLanguageFactory`
+
 ~~~~java
 import static org.qenherkhopeshef.finitestate.lazy.RegularLanguageFactory.*;
 ~~~~
 2. Use them to build a RegularExtractor
+
 ~~~~java
 RegularExtractor<Character> rec = 
                 RegularExtractor.<Character>getBuilder()
@@ -61,6 +64,7 @@ give us the position of each part. See below.
 
 
 3. search:
+
 ~~~java
  String s = "dhfjhdfsh0023.dfsd35fds";
  List<Character> toMatch = StringToListHelper.fromString(s);
@@ -72,6 +76,7 @@ positions of the whole matched text, as well as the positions of the text matche
 
 
 Thus, the text between the first position and the last position is the whole match. We could write :
+
 ~~~java
 for (MatchResult m: result) {
 	System.out.println(

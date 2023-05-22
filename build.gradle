@@ -1,9 +1,7 @@
 
 plugins {
-    id 'java-library'    
-    id 'maven'
+    id 'java-library'
     id 'maven-publish'
-    id 'signing'
 }
 
 version = '2.0'
@@ -12,12 +10,13 @@ description = "${project.name}"
 archivesBaseName = "${project.name}"
 
 java {
-    sourceCompatibility = JavaVersion.VERSION_1_8
-    targetCompatibility = JavaVersion.VERSION_1_8
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(8)
+    }
 }
+compileJava.options.encoding = 'UTF-8'
 
 repositories {   
-    jcenter() 
     mavenLocal()
 }
 
@@ -25,124 +24,34 @@ dependencies {
     testImplementation 'junit:junit:4.12'
 }
 
-tasks.withType(JavaCompile) {
-    options.encoding = 'UTF-8'
-    //options.compilerArgs << "-Xlint:unchecked" << "-Xlint:deprecation"
-    //options.compilerArgs << "-Xlint:deprecation"
+task distClean {
+    dependsOn('clean')
+        doLast {
+            delete 'bin'
+            delete '.classpath'
+            delete '.gradle'
+            delete '.nb-gradle'
+            delete '.project'
+            delete '.settings'
+            delete '.vscode'
+            delete '.DS_Store'
+            delete '.idea'
+    }
 }
 
-
-clean {
-	delete "bin"
-}
-
-// Needed for publishToMavenLocal
 publishing {
     publications {
-        maven(MavenPublication) {
-            from(components.java)
+        mavenJava(MavenPublication) {
+            artifactId = "${project.name}"
+            from components.java
+            versionMapping {
+                usage('java-api') {
+                    fromResolutionOf('runtimeClasspath')
+                }
+                usage('java-runtime') {
+                    fromResolutionResult()
+                }
+            }
         }
     }
-}
-
-// Below : specific sonatype publication stuff
-
-task javadocJar(type: Jar) {
-    classifier = 'javadoc'
-    from javadoc
-}
-
-task sourcesJar(type: Jar) {
-    classifier = 'sources'
-    from sourceSets.main.allSource
-}
-
-artifacts {
-    archives javadocJar, sourcesJar
-}
-
-
-// Remove javadoc warning (way too verbose !)
-if (JavaVersion.current().isJava8Compatible()) {
-    allprojects {
-      tasks.withType(Javadoc) {        
-          options.addStringOption('Xdoclint:none', '-quiet')
-      }
-    }
-}
-
-ext.isReleaseVersion = !version.endsWith("SNAPSHOT")
-
-tasks.withType(Sign) {
-    onlyIf { gradle.taskGraph.hasTask(":doSign")  }
-}
-
-signing {
-    useGpgCmd()
-    sign configurations.archives
-}
-
-task doSign {
-  dependsOn build
-}
-
-uploadArchives.dependsOn(doSign)
-
-uploadArchives {
-  repositories {
-    mavenDeployer {
-      beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
-
-
-    // From https://stackoverflow.com/questions/43710659/uploading-to-maven-central-with-gradle-avoiding-unknown-property-error
-    // to allow compilation and build without connexion.
-    repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
-      authentication(userName: findProperty('ossrhUsername'), password: findProperty('ossrhPassword'))
-    }
-
-    snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
-      authentication(userName: findProperty('ossrhUsername'), password: findProperty('ossrhPassword'))
-    }
-
-      pom.project {
-        name "${project.name}"
-        packaging 'jar'
-        description 'Regular Language Library for JSesh and Ramses'
-        url "https://github.com/rosmord/${project.name}"
-
-        scm {
-          connection "scm:git:git@github.com:rosmord/${project.name}.git"
-          developerConnection "scm:git:git@github.com:rosmord/${project.name}.git"
-          url "https://github.com/rosmord/${project.name}"
-        }
-
-        licenses {
-          license {
-            name 'CeCILL-C'
-            url 'https://cecill.info/licences/Licence_CeCILL-C_V1-en.txt'
-          }
-        }
-
-        developers {
-          developer {
-            id 'rosmord'
-            name 'Serge Rosmorduc'
-            email 'serge.rosmorduc@qenherkhopeshef.org'
-          }
-        }
-      }
-    }
-  }
-}
-
-task distclean {
-  doLast {
-    delete "bin"
-	  delete ".classpath"
- 	  delete ".vscode"
- 	  delete ".settings"
- 	  delete ".project"
- 	  delete ".idea"
- 	  delete ".nb-gradle"	 
-  }
 }
